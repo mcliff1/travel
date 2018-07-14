@@ -1,831 +1,494 @@
-swagger: "2.0"
+swagger: '2.0'
 info:
-  description: "Hotel Reservation POC"
-  version: "1.0.0"
-  title: "Hotel Reservations"
+  description: Hotel Reservation POC
+  version: 1.0.0
+  title: Hotel Reservations
   contact:
-    email: "matt@denvercliffs.com"
+    email: matt@denvercliffs.com
   license:
-    name: "MIT license"
-    url: "https://opensource.org/licenses/MIT"
-host: "hotel.mattcliff.net"
-basePath: "/v1"
+    name: MIT license
+    url: 'https://opensource.org/licenses/MIT'
+host: hotel.mattcliff.net
+basePath: /v1
 tags:
-- name: "hotel"
-  description: "Hotel Information"
-- name: "room"
-  description: "Room Information"
-- name: "reservation"
-  description: "Operations about booking"
+  - name: hotel
+    description: Hotel Information
+  - name: room
+    description: Room Information
+  - name: reservation
+    description: Operations about booking
 schemes:
-- "https"
+  - https
 paths:
   /hotel:
     post:
       tags:
-      - "hotel"
-      summary: "Add a new hotel to the system"
-      description: ""
-      operationId: "addHotel"
+        - hotel
+      summary: Add a new hotel to the system
+      description: ''
+      operationId: addHotel
       consumes:
-      - "application/json"
-      - "application/xml"
+        - application/json
+        - application/xml
       produces:
-      - "application/xml"
-      - "application/json"
+        - application/xml
+        - application/json
       parameters:
-      - in: "body"
-        name: "body"
-        description: "Hotel object that needs to be added"
-        required: true
-        schema:
-          $ref: "#/definitions/Hotel"
+        - in: body
+          name: body
+          description: Hotel object that needs to be added
+          required: true
+          schema:
+            $ref: '#/definitions/Hotel'
       responses:
-        405:
-          description: "Invalid input"
+        '405':
+          description: Invalid input
       security:
-      - hotel_auth:
-        - "write:hotel"
-        - "read:hotel"
+        - hotel_auth:
+            - 'write:hotel'
+            - 'read:hotel'
     put:
       tags:
-      - "hotel"
-      summary: "Update an existing hotel"
-      description: ""
-      operationId: "updateHotel"
+        - hotel
+      summary: Update an existing hotel
+      description: ''
+      operationId: updateHotel
       consumes:
-      - "application/json"
-      - "application/xml"
+        - application/json
+        - application/xml
       produces:
-      - "application/xml"
-      - "application/json"
+        - application/xml
+        - application/json
       parameters:
-      - in: "body"
-        name: "body"
-        description: "Hotel object that needs to be updated"
-        required: true
-        schema:
-          $ref: "#/definitions/Hotel"
+        - in: body
+          name: body
+          description: Hotel object that needs to be updated
+          required: true
+          schema:
+            $ref: '#/definitions/Hotel'
       responses:
-        400:
-          description: "Invalid ID supplied"
-        404:
-          description: "Hotel not found"
-        405:
-          description: "Validation exception"
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Hotel not found
+        '405':
+          description: Validation exception
       security:
-      - hotel_auth:
-        - "write:hotel"
-        - "read:hotel"
-  /hotel/{hotelId}:
+        - hotel_auth:
+            - 'write:hotel'
+            - 'read:hotel'
+  '/hotel/{hotelId}':
     get:
       tags:
-      - "hotel"
-      summary: "Find hotel by ID"
-      description: "Returns a single hotel"
-      operationId: "getHotelById"
+        - hotel
+      summary: Find hotel by ID
+      description: Returns a single hotel
+      operationId: getHotelById
       produces:
-      - "application/xml"
-      - "application/json"
+        - application/xml
+        - application/json
       parameters:
-      - name: "hotelId"
-        in: "path"
-        description: "ID of hotel to return"
-        required: true
-        type: "integer"
-        format: "int64"
+        - name: hotelId
+          in: path
+          description: ID of hotel to return
+          required: true
+          type: integer
+          format: int64
       responses:
-        200:
-          description: "successful operation"
+        '200':
+          description: successful operation
           schema:
-            $ref: "#/definitions/Hotel"
-        400:
-          description: "Invalid ID supplied"
-        404:
-          description: "Hotel not found"
+            $ref: '#/definitions/Hotel'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Hotel not found
       security:
-      - api_key: []
+        - api_key: []
     delete:
       tags:
-      - "hotel"
-      summary: "Deletes a Hotel"
-      description: ""
-      operationId: "deleteHotel"
+        - hotel
+      summary: Deletes a Hotel
+      description: ''
+      operationId: deleteHotel
       produces:
-      - "application/xml"
-      - "application/json"
+        - application/xml
+        - application/json
       parameters:
-      - name: "api_key"
-        in: "header"
-        required: false
-        type: "string"
-      - name: "hotelId"
-        in: "path"
-        description: "Hotel id to delete"
-        required: true
-        type: "integer"
-        format: "int64"
+        - name: api_key
+          in: header
+          required: false
+          type: string
+        - name: hotelId
+          in: path
+          description: Hotel id to delete
+          required: true
+          type: integer
+          format: int64
       responses:
-        400:
-          description: "Invalid ID supplied"
-        404:
-          description: "Hotel not found"
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Hotel not found
       security:
-      - hotel_auth:
-        - "write:hotel"
-        - "read:hotel"
-  /hotel/{hotelId}/availableRooms:
+        - hotel_auth:
+            - 'write:hotel'
+            - 'read:hotel'
+  '/hotel/{hotelId}/availableRooms':
     post:
       tags:
-      - "hotel"
-      summary: "returns available rooms"
-      description: "Returns a list of rooms available"
-      operationId: "getAvailableRooms"
+        - hotel
+      summary: returns available rooms
+      description: Returns a list of rooms available
+      operationId: getAvailableRooms
       produces:
-      - "application/xml"
-      - "application/json"
+        - application/xml
+        - application/json
       parameters:
-      - name: "hotelId"
-        in: "path"
-        description: "ID of hotel to return"
-        required: true
-        type: "integer"
-        format: "int64"
-      - in: "body"
-        name: "body"
-        description: "object that needs to be added"
-        required: true
-        schema:
-          $ref: "#/definitions/Reservation"
-      responses:
-        200:
-          description: "successful operation"
+        - name: hotelId
+          in: path
+          description: ID of hotel to return
+          required: true
+          type: integer
+          format: int64
+        - in: body
+          name: body
+          description: object that needs to be added
+          required: true
           schema:
-            $ref: "#/definitions/Hotel"
-        400:
-          description: "Invalid ID supplied"
-        404:
-          description: "Hotel not found"
+            $ref: '#/definitions/Reservation'
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/Hotel'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Hotel not found
       security:
-      - api_key: []
+        - api_key: []
   /room:
     post:
       tags:
-      - "room"
-      summary: "Add a new room to the system"
-      description: ""
-      operationId: "addRoom"
+        - room
+      summary: Add a new room to the system
+      description: ''
+      operationId: addRoom
       consumes:
-      - "application/json"
-      - "application/xml"
+        - application/json
+        - application/xml
       produces:
-      - "application/xml"
-      - "application/json"
+        - application/xml
+        - application/json
       parameters:
-      - in: "body"
-        name: "body"
-        description: "Room object that needs to be added"
-        required: true
-        schema:
-          $ref: "#/definitions/Room"
+        - in: body
+          name: body
+          description: Room object that needs to be added
+          required: true
+          schema:
+            $ref: '#/definitions/Room'
       responses:
-        405:
-          description: "Invalid input"
+        '405':
+          description: Invalid input
       security:
-      - hotel_auth:
-        - "write:hotel"
-        - "read:hotel"
+        - hotel_auth:
+            - 'write:hotel'
+            - 'read:hotel'
     put:
       tags:
-      - "room"
-      summary: "Update an existing room"
-      description: ""
-      operationId: "updateRoom"
+        - room
+      summary: Update an existing room
+      description: ''
+      operationId: updateRoom
       consumes:
-      - "application/json"
-      - "application/xml"
+        - application/json
+        - application/xml
       produces:
-      - "application/xml"
-      - "application/json"
+        - application/xml
+        - application/json
       parameters:
-      - in: "body"
-        name: "body"
-        description: "Room object that needs to be updated"
-        required: true
-        schema:
-          $ref: "#/definitions/Room"
+        - in: body
+          name: body
+          description: Room object that needs to be updated
+          required: true
+          schema:
+            $ref: '#/definitions/Room'
       responses:
-        400:
-          description: "Invalid ID supplied"
-        404:
-          description: "Room not found"
-        405:
-          description: "Validation exception"
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Room not found
+        '405':
+          description: Validation exception
       security:
-      - hotel_auth:
-        - "write:hotel"
-        - "read:hotel"
-  /room/{roomId}:
+        - hotel_auth:
+            - 'write:hotel'
+            - 'read:hotel'
+  '/room/{roomId}':
     get:
       tags:
-      - "room"
-      summary: "Find room by ID"
-      description: "Returns a single room"
-      operationId: "getRoomById"
+        - room
+      summary: Find room by ID
+      description: Returns a single room
+      operationId: getRoomById
       produces:
-      - "application/xml"
-      - "application/json"
+        - application/xml
+        - application/json
       parameters:
-      - name: "roomId"
-        in: "path"
-        description: "ID of room to return"
-        required: true
-        type: "integer"
-        format: "int64"
+        - name: roomId
+          in: path
+          description: ID of room to return
+          required: true
+          type: integer
+          format: int64
       responses:
-        200:
-          description: "successful operation"
+        '200':
+          description: successful operation
           schema:
-            $ref: "#/definitions/Room"
-        400:
-          description: "Invalid ID supplied"
-        404:
-          description: "Room not found"
+            $ref: '#/definitions/Room'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Room not found
       security:
-      - api_key: []
+        - api_key: []
     delete:
       tags:
-      - "room"
-      summary: "Deletes a Room"
-      description: ""
-      operationId: "deleteRoom"
+        - room
+      summary: Deletes a Room
+      description: ''
+      operationId: deleteRoom
       produces:
-      - "application/xml"
-      - "application/json"
+        - application/xml
+        - application/json
       parameters:
-      - name: "api_key"
-        in: "header"
-        required: false
-        type: "string"
-      - name: "roomId"
-        in: "path"
-        description: "Room id to delete"
-        required: true
-        type: "integer"
-        format: "int64"
+        - name: api_key
+          in: header
+          required: false
+          type: string
+        - name: roomId
+          in: path
+          description: Room id to delete
+          required: true
+          type: integer
+          format: int64
       responses:
-        400:
-          description: "Invalid ID supplied"
-        404:
-          description: "Hotel not found"
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Hotel not found
       security:
-      - hotel_auth:
-        - "write:hotel"
-        - "read:hotel"
-  /room/{roomId}/uploadImage:
+        - hotel_auth:
+            - 'write:hotel'
+            - 'read:hotel'
+  '/room/{roomId}/uploadImage':
     post:
       tags:
-      - "room"
-      summary: "uploads an image"
-      description: ""
-      operationId: "uploadFile"
+        - room
+      summary: uploads an image
+      description: ''
+      operationId: uploadFile
       consumes:
-      - "multipart/form-data"
+        - multipart/form-data
       produces:
-      - "application/json"
+        - application/json
       parameters:
-      - name: "roomId"
-        in: "path"
-        description: "ID of room to update"
-        required: true
-        type: "integer"
-        format: "int64"
-      - name: "additionalMetadata"
-        in: "formData"
-        description: "Additional data to pass to server"
-        required: false
-        type: "string"
-      - name: "file"
-        in: "formData"
-        description: "file to upload"
-        required: false
-        type: "file"
+        - name: roomId
+          in: path
+          description: ID of room to update
+          required: true
+          type: integer
+          format: int64
+        - name: additionalMetadata
+          in: formData
+          description: Additional data to pass to server
+          required: false
+          type: string
+        - name: file
+          in: formData
+          description: file to upload
+          required: false
+          type: file
       responses:
-        200:
-          description: "successful operation"
+        '200':
+          description: successful operation
           schema:
-            $ref: "#/definitions/ApiResponse"
+            $ref: '#/definitions/ApiResponse'
       security:
-      - hotel_auth:
-        - "write:hotel"
-        - "read:hotel"
+        - hotel_auth:
+            - 'write:hotel'
+            - 'read:hotel'
+  /room/findRoom:
+    post:
+      tags:
+        - room
+      summary: finds a room
+      description: ''
+      operationId: findRoom
+      consumes:
+        - application/json
+        - application/xml
+      produces:
+        - application/xml
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: Room object that needs to be added
+          required: true
+          schema:
+            $ref: '#/definitions/RoomQuery'
+      responses:
+        '405':
+          description: Invalid input
+      security:
+        - hotel_auth:
+            - 'write:hotel'
+            - 'read:hotel'
   /reservation/bookRoom:
     post:
       tags:
-      - "reservation"
-      summary: "returns available rooms"
-      description: "Returns a list of rooms available"
-      operationId: "bookRoom"
+        - reservation
+      summary: returns available rooms
+      description: Returns a list of rooms available
+      operationId: bookRoom
       produces:
-      - "application/xml"
-      - "application/json"
+        - application/xml
+        - application/json
       parameters:
-      - name: "hotelId"
-        in: "path"
-        description: "ID of hotel to return"
-        required: true
-        type: "integer"
-        format: "int64"
-      - in: "body"
-        name: "body"
-        description: "object that needs to be added"
-        required: true
-        schema:
-          $ref: "#/definitions/Reservation"
-      responses:
-        200:
-          description: "successful operation"
+        - name: hotelId
+          in: path
+          description: ID of hotel to return
+          required: true
+          type: integer
+          format: int64
+        - in: body
+          name: body
+          description: object that needs to be added
+          required: true
           schema:
-            $ref: "#/definitions/Hotel"
-        400:
-          description: "Invalid ID supplied"
-        404:
-          description: "Hotel not found"
-      security:
-      - api_key: []
-  /pet:
-    post:
-      tags:
-      - "pet"
-      summary: "Add a new pet to the store"
-      description: ""
-      operationId: "addPet"
-      consumes:
-      - "application/json"
-      - "application/xml"
-      produces:
-      - "application/xml"
-      - "application/json"
-      parameters:
-      - in: "body"
-        name: "body"
-        description: "Pet object that needs to be added to the store"
-        required: true
-        schema:
-          $ref: "#/definitions/Pet"
+            $ref: '#/definitions/Reservation'
       responses:
-        405:
-          description: "Invalid input"
-      security:
-      - petstore_auth:
-        - "write:pets"
-        - "read:pets"
-    put:
-      tags:
-      - "pet"
-      summary: "Update an existing pet"
-      description: ""
-      operationId: "updatePet"
-      consumes:
-      - "application/json"
-      - "application/xml"
-      produces:
-      - "application/xml"
-      - "application/json"
-      parameters:
-      - in: "body"
-        name: "body"
-        description: "Pet object that needs to be added to the store"
-        required: true
-        schema:
-          $ref: "#/definitions/Pet"
-      responses:
-        400:
-          description: "Invalid ID supplied"
-        404:
-          description: "Pet not found"
-        405:
-          description: "Validation exception"
-      security:
-      - petstore_auth:
-        - "write:pets"
-        - "read:pets"
-  /pet/findByTags:
-    get:
-      tags:
-      - "pet"
-      summary: "Finds Pets by tags"
-      description: "Muliple tags can be provided with comma separated strings. Use         tag1, tag2, tag3 for testing."
-      operationId: "findPetsByTags"
-      produces:
-      - "application/xml"
-      - "application/json"
-      parameters:
-      - name: "tags"
-        in: "query"
-        description: "Tags to filter by"
-        required: true
-        type: "array"
-        items:
-          type: "string"
-        collectionFormat: "multi"
-      responses:
-        200:
-          description: "successful operation"
+        '200':
+          description: successful operation
           schema:
-            type: "array"
-            items:
-              $ref: "#/definitions/Pet"
-        400:
-          description: "Invalid tag value"
+            $ref: '#/definitions/Hotel'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Hotel not found
       security:
-      - petstore_auth:
-        - "write:pets"
-        - "read:pets"
-      deprecated: true
-  /pet/{petId}:
-    get:
-      tags:
-      - "pet"
-      summary: "Find pet by ID"
-      description: "Returns a single pet"
-      operationId: "getPetById"
-      produces:
-      - "application/xml"
-      - "application/json"
-      parameters:
-      - name: "petId"
-        in: "path"
-        description: "ID of pet to return"
-        required: true
-        type: "integer"
-        format: "int64"
-      responses:
-        200:
-          description: "successful operation"
-          schema:
-            $ref: "#/definitions/Pet"
-        400:
-          description: "Invalid ID supplied"
-        404:
-          description: "Pet not found"
-      security:
-      - api_key: []
-    post:
-      tags:
-      - "pet"
-      summary: "Updates a pet in the store with form data"
-      description: ""
-      operationId: "updatePetWithForm"
-      consumes:
-      - "application/x-www-form-urlencoded"
-      produces:
-      - "application/xml"
-      - "application/json"
-      parameters:
-      - name: "petId"
-        in: "path"
-        description: "ID of pet that needs to be updated"
-        required: true
-        type: "integer"
-        format: "int64"
-      - name: "name"
-        in: "formData"
-        description: "Updated name of the pet"
-        required: false
-        type: "string"
-      - name: "status"
-        in: "formData"
-        description: "Updated status of the pet"
-        required: false
-        type: "string"
-      responses:
-        405:
-          description: "Invalid input"
-      security:
-      - petstore_auth:
-        - "write:pets"
-        - "read:pets"
-    delete:
-      tags:
-      - "pet"
-      summary: "Deletes a pet"
-      description: ""
-      operationId: "deletePet"
-      produces:
-      - "application/xml"
-      - "application/json"
-      parameters:
-      - name: "api_key"
-        in: "header"
-        required: false
-        type: "string"
-      - name: "petId"
-        in: "path"
-        description: "Pet id to delete"
-        required: true
-        type: "integer"
-        format: "int64"
-      responses:
-        400:
-          description: "Invalid ID supplied"
-        404:
-          description: "Pet not found"
-      security:
-      - petstore_auth:
-        - "write:pets"
-        - "read:pets"
-  /store/inventory:
-    get:
-      tags:
-      - "store"
-      summary: "Returns pet inventories by status"
-      description: "Returns a map of status codes to quantities"
-      operationId: "getInventory"
-      produces:
-      - "application/json"
-      parameters: []
-      responses:
-        200:
-          description: "successful operation"
-          schema:
-            type: "object"
-            additionalProperties:
-              type: "integer"
-              format: "int32"
-      security:
-      - api_key: []
-  /store/order:
-    post:
-      tags:
-      - "store"
-      summary: "Place an order for a pet"
-      description: ""
-      operationId: "placeOrder"
-      produces:
-      - "application/xml"
-      - "application/json"
-      parameters:
-      - in: "body"
-        name: "body"
-        description: "order placed for purchasing the pet"
-        required: true
-        schema:
-          $ref: "#/definitions/Order"
-      responses:
-        200:
-          description: "successful operation"
-          schema:
-            $ref: "#/definitions/Order"
-        400:
-          description: "Invalid Order"
-  /store/order/{orderId}:
-    get:
-      tags:
-      - "store"
-      summary: "Find purchase order by ID"
-      description: "For valid response try integer IDs with value >= 1 and <= 10.         Other values will generated exceptions"
-      operationId: "getOrderById"
-      produces:
-      - "application/xml"
-      - "application/json"
-      parameters:
-      - name: "orderId"
-        in: "path"
-        description: "ID of pet that needs to be fetched"
-        required: true
-        type: "integer"
-        maximum: 10.0
-        minimum: 1.0
-        format: "int64"
-      responses:
-        200:
-          description: "successful operation"
-          schema:
-            $ref: "#/definitions/Order"
-        400:
-          description: "Invalid ID supplied"
-        404:
-          description: "Order not found"
-    delete:
-      tags:
-      - "store"
-      summary: "Delete purchase order by ID"
-      description: "For valid response try integer IDs with positive integer value.         Negative or non-integer values will generate API errors"
-      operationId: "deleteOrder"
-      produces:
-      - "application/xml"
-      - "application/json"
-      parameters:
-      - name: "orderId"
-        in: "path"
-        description: "ID of the order that needs to be deleted"
-        required: true
-        type: "integer"
-        minimum: 1.0
-        format: "int64"
-      responses:
-        400:
-          description: "Invalid ID supplied"
-        404:
-          description: "Order not found"
-
+        - api_key: []
 securityDefinitions:
-  petstore_auth:
-    type: "oauth2"
-    authorizationUrl: "http://petstore.swagger.io/oauth/dialog"
-    flow: "implicit"
-    scopes:
-      write:pets: "modify pets in your account"
-      read:pets: "read your pets"
   hotel_auth:
-    type: "oauth2"
-    authorizationUrl: "http://petstore.swagger.io/oauth/dialog"
-    flow: "implicit"
+    type: oauth2
+    authorizationUrl: 'http://petstore.swagger.io/oauth/dialog'
+    flow: implicit
     scopes:
-      write:hotel: "modify hotel in your account"
-      read:hotel: "read your hotels"
+      'write:hotel': modify hotel in your account
+      'read:hotel': read your hotels
   api_key:
-    type: "apiKey"
-    name: "api_key"
-    in: "header"
+    type: apiKey
+    name: api_key
+    in: header
 definitions:
-  Order:
-    type: "object"
-    properties:
-      id:
-        type: "integer"
-        format: "int64"
-      petId:
-        type: "integer"
-        format: "int64"
-      quantity:
-        type: "integer"
-        format: "int32"
-      shipDate:
-        type: "string"
-        format: "date-time"
-      status:
-        type: "string"
-        description: "Order Status"
-        enum:
-        - "placed"
-        - "approved"
-        - "delivered"
-      complete:
-        type: "boolean"
-        default: false
-    xml:
-      name: "Order"
-  Category:
-    type: "object"
-    properties:
-      id:
-        type: "integer"
-        format: "int64"
-      name:
-        type: "string"
-    xml:
-      name: "Category"
-  Tag:
-    type: "object"
-    properties:
-      id:
-        type: "integer"
-        format: "int64"
-      name:
-        type: "string"
-    xml:
-      name: "Tag"
-  Pet:
-    type: "object"
-    required:
-    - "name"
-    - "photoUrls"
-    properties:
-      id:
-        type: "integer"
-        format: "int64"
-      category:
-        $ref: "#/definitions/Category"
-      name:
-        type: "string"
-        example: "doggie"
-      photoUrls:
-        type: "array"
-        xml:
-          name: "photoUrl"
-          wrapped: true
-        items:
-          type: "string"
-      tags:
-        type: "array"
-        xml:
-          name: "tag"
-          wrapped: true
-        items:
-          $ref: "#/definitions/Tag"
-      status:
-        type: "string"
-        description: "pet status in the store"
-        enum:
-        - "available"
-        - "pending"
-        - "sold"
-    xml:
-      name: "Pet"
   ApiResponse:
-    type: "object"
+    type: object
     properties:
       code:
-        type: "integer"
-        format: "int32"
+        type: integer
+        format: int32
       type:
-        type: "string"
+        type: string
       message:
-        type: "string"
+        type: string
   Hotel:
-    type: "object"
+    type: object
     required:
-    - "name"
-    - "city"
+      - name
+      - city
     properties:
       hotelId:
-        type: "integer"
-        format: "int64"
+        type: integer
+        format: int64
       name:
-        type: "string"
-        example: "The Landmark"
+        type: string
+        example: The Landmark
       address:
-        type: "string"
-        example: "123 South Main Street"
+        type: string
+        example: 123 South Main Street
       city:
-        type: "string"
-        example: "Denver"
+        type: string
+        example: Denver
       phone:
-        type: "string"
-        example: "(303) 555-STAY"
+        type: string
+        example: (303) 555-STAY
       starts:
-        type: "integer"
-        example: "The Landmark"
-      tags:
-        type: "array"
-        xml:
-          name: "tag"
-          wrapped: true
-        items:
-          $ref: "#/definitions/Tag"
+        type: integer
+        example: The Landmark
     xml:
-      name: "Hotel"
+      name: Hotel
   Room:
-    type: "object"
+    type: object
     required:
-    - "description"
-    - "photoUrls"
+      - description
+      - photoUrls
     properties:
       roomId:
-        type: "integer"
-        format: "int64"
+        type: integer
+        format: int64
       hotelId:
-        type: "integer"
-        format: "int64"
+        type: integer
+        format: int64
       description:
-        type: "string"
-        example: "1 bed suite with King"
+        type: string
+        example: 1 bed suite with King
       photoUrls:
-        type: "array"
+        type: array
         xml:
-          name: "photoUrl"
+          name: photoUrl
           wrapped: true
         items:
-          type: "string"
+          type: string
       startAvailDate:
-        type: "string"
-        format: "date"
+        type: string
+        format: date
       endAvailDate:
-        type: "string"
-        format: "date"
+        type: string
+        format: date
       status:
-        type: "string"
-        description: "room status"
+        type: string
+        description: room status
         enum:
-        - "available"
-        - "reserved"
+          - available
+          - reserved
     xml:
-      name: "Room"
+      name: Room
   Reservation:
-    type: "object"
+    type: object
     properties:
       startDate:
-        type: "string"
-        format: "date"
+        type: string
+        format: date
       endDate:
-        type: "string"
-        format: "date"
+        type: string
+        format: date
       guests:
-        type: "string"
+        type: string
       roomId:
-        type: "string"
+        type: string
+  RoomQuery:
+    type: object
+    properties:
+      startDate:
+        type: string
+        format: date
+      endDate:
+        type: string
+        format: date
+      guests:
+        type: string
 externalDocs:
-  description: "Find out more"
-  url: "https://github.com/mcliff1/travel"
+  description: Find out more
+  url: 'https://github.com/mcliff1/travel'
