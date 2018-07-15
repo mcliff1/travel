@@ -26,7 +26,7 @@ paths:
       tags:
         - hotel
       summary: Add a new hotel to the system
-      description: ''
+      description: 'ignores id in the body'
       operationId: addHotel
       consumes:
         - application/json
@@ -40,13 +40,17 @@ paths:
           schema:
             $ref: '#/definitions/Hotel'
       responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/Hotel'
         '405':
           description: Invalid input
     put:
       tags:
         - hotel
       summary: Update an existing hotel
-      description: ''
+      description: 'id is required in the body and must be valid'
       operationId: updateHotel
       consumes:
         - application/json
@@ -60,12 +64,14 @@ paths:
           schema:
             $ref: '#/definitions/Hotel'
       responses:
+        '200':
+          description: successful operation
         '400':
           description: Invalid ID supplied
         '404':
           description: Hotel not found
         '405':
-          description: Validation exception
+          description: Input Validation exception
   '/hotel/{hotelId}':
     get:
       tags:
@@ -111,16 +117,18 @@ paths:
           type: integer
           format: int64
       responses:
+        '200':
+          description: successfully removed
         '400':
           description: Invalid ID supplied
         '404':
           description: Hotel not found
   '/hotel/{hotelId}/availableRooms':
-    post:
+    get:
       tags:
         - hotel
       summary: returns available rooms
-      description: Returns a list of rooms available
+      description: Returns a list of rooms currently available
       operationId: getAvailableRooms
       produces:
         - application/json
@@ -131,17 +139,13 @@ paths:
           required: true
           type: integer
           format: int64
-        - in: body
-          name: body
-          description: object that needs to be added
-          required: true
-          schema:
-            $ref: '#/definitions/Reservation'
       responses:
         '200':
           description: successful operation
           schema:
-            $ref: '#/definitions/Hotel'
+            type: array
+            items:
+              $ref: '#/definitions/Room'
         '400':
           description: Invalid ID supplied
         '404':
@@ -155,9 +159,7 @@ paths:
       operationId: addRoom
       consumes:
         - application/json
-        - application/xml
       produces:
-        - application/xml
         - application/json
       parameters:
         - in: body
@@ -167,6 +169,10 @@ paths:
           schema:
             $ref: '#/definitions/Room'
       responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/Room'
         '405':
           description: Invalid input
     put:
@@ -187,6 +193,8 @@ paths:
           schema:
             $ref: '#/definitions/Room'
       responses:
+        '200':
+          description: successful operation
         '400':
           description: Invalid ID supplied
         '404':
@@ -238,6 +246,8 @@ paths:
           type: integer
           format: int64
       responses:
+        '200':
+          description: successful operation
         '400':
           description: Invalid ID supplied
         '404':
@@ -275,12 +285,14 @@ paths:
           description: successful operation
           schema:
             $ref: '#/definitions/ApiResponse'
+        '404':
+          description: Room not found
   /room/findRoom:
     post:
       tags:
         - room
       summary: finds a room
-      description: ''
+      description: 'returns list of available rooms that meet the input search critera RoomQuery'
       operationId: findRoom
       consumes:
         - application/json
@@ -294,13 +306,70 @@ paths:
           schema:
             $ref: '#/definitions/RoomQuery'
       responses:
+        '200':
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Room'
         '405':
           description: Invalid input
+  '/reservation/{reservationId}':
+    get:
+      tags:
+        - reservation
+      summary: Find reservation by ID
+      description: Returns a single reservation
+      operationId: getReservationById
+      produces:
+        - application/json
+      parameters:
+        - name: reservationId
+          in: path
+          description: ID of reservation to return
+          required: true
+          type: integer
+          format: int64
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/Reservation'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: reservation not found
+    delete:
+      tags:
+        - reservation
+      summary: Deletes a reservation
+      description: ''
+      operationId: deleteReservation
+      produces:
+        - application/json
+      parameters:
+        - name: api_key
+          in: header
+          required: false
+          type: string
+        - name: reservationId
+          in: path
+          description: reservation id to delete
+          required: true
+          type: integer
+          format: int64
+      responses:
+        '200':
+          description: successfully removed
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: reservation not found
   /reservation/bookRoom:
     post:
       tags:
         - reservation
-      summary: returns available rooms
+      summary: creates a reservation for the requested room
       description: Returns a list of rooms available
       operationId: bookRoom
       produces:
@@ -322,7 +391,7 @@ paths:
         '200':
           description: successful operation
           schema:
-            $ref: '#/definitions/Hotel'
+            $ref: '#/definitions/Reservation'
         '400':
           description: Invalid ID supplied
         '404':
@@ -395,6 +464,9 @@ definitions:
       - endDate
       - guests
     properties:
+      reservationId:
+        type: integer
+        format: int64
       roomId:
         type: string
       startDate:
