@@ -1,0 +1,173 @@
+package com.cliffconsulting.travel.model;
+
+import java.util.Objects;
+import com.cliffconsulting.travel.model.ReservationGuests;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import java.util.ArrayList;
+import java.util.List;
+import org.threeten.bp.LocalDate;
+import org.springframework.validation.annotation.Validated;
+import javax.validation.Valid;
+import javax.validation.constraints.*;
+
+/**
+ * Reservation
+ */
+@Validated
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-07-15T20:07:07.747Z")
+
+public class Reservation   {
+  @JsonProperty("roomId")
+  private String roomId = null;
+
+  @JsonProperty("startDate")
+  private LocalDate startDate = null;
+
+  @JsonProperty("endDate")
+  private LocalDate endDate = null;
+
+  @JsonProperty("guests")
+  @Valid
+  private List<ReservationGuests> guests = new ArrayList<ReservationGuests>();
+
+  public Reservation roomId(String roomId) {
+    this.roomId = roomId;
+    return this;
+  }
+
+  /**
+   * Get roomId
+   * @return roomId
+  **/
+  @ApiModelProperty(required = true, value = "")
+  @NotNull
+
+
+  public String getRoomId() {
+    return roomId;
+  }
+
+  public void setRoomId(String roomId) {
+    this.roomId = roomId;
+  }
+
+  public Reservation startDate(LocalDate startDate) {
+    this.startDate = startDate;
+    return this;
+  }
+
+  /**
+   * Get startDate
+   * @return startDate
+  **/
+  @ApiModelProperty(required = true, value = "")
+  @NotNull
+
+  @Valid
+
+  public LocalDate getStartDate() {
+    return startDate;
+  }
+
+  public void setStartDate(LocalDate startDate) {
+    this.startDate = startDate;
+  }
+
+  public Reservation endDate(LocalDate endDate) {
+    this.endDate = endDate;
+    return this;
+  }
+
+  /**
+   * Get endDate
+   * @return endDate
+  **/
+  @ApiModelProperty(required = true, value = "")
+  @NotNull
+
+  @Valid
+
+  public LocalDate getEndDate() {
+    return endDate;
+  }
+
+  public void setEndDate(LocalDate endDate) {
+    this.endDate = endDate;
+  }
+
+  public Reservation guests(List<ReservationGuests> guests) {
+    this.guests = guests;
+    return this;
+  }
+
+  public Reservation addGuestsItem(ReservationGuests guestsItem) {
+    this.guests.add(guestsItem);
+    return this;
+  }
+
+  /**
+   * Get guests
+   * @return guests
+  **/
+  @ApiModelProperty(required = true, value = "")
+  @NotNull
+
+  @Valid
+
+  public List<ReservationGuests> getGuests() {
+    return guests;
+  }
+
+  public void setGuests(List<ReservationGuests> guests) {
+    this.guests = guests;
+  }
+
+
+  @Override
+  public boolean equals(java.lang.Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    Reservation reservation = (Reservation) o;
+    return Objects.equals(this.roomId, reservation.roomId) &&
+        Objects.equals(this.startDate, reservation.startDate) &&
+        Objects.equals(this.endDate, reservation.endDate) &&
+        Objects.equals(this.guests, reservation.guests);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(roomId, startDate, endDate, guests);
+  }
+
+  @Override
+  public String toString() {
+    StringBuilder sb = new StringBuilder();
+    sb.append("class Reservation {\n");
+    
+    sb.append("    roomId: ").append(toIndentedString(roomId)).append("\n");
+    sb.append("    startDate: ").append(toIndentedString(startDate)).append("\n");
+    sb.append("    endDate: ").append(toIndentedString(endDate)).append("\n");
+    sb.append("    guests: ").append(toIndentedString(guests)).append("\n");
+    sb.append("}");
+    return sb.toString();
+  }
+
+  /**
+   * Convert the given object to string with each line indented by 4 spaces
+   * (except the first line).
+   */
+  private String toIndentedString(java.lang.Object o) {
+    if (o == null) {
+      return "null";
+    }
+    return o.toString().replace("\n", "\n    ");
+  }
+}
+
