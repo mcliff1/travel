@@ -30,9 +30,7 @@ paths:
       operationId: addHotel
       consumes:
         - application/json
-        - application/xml
       produces:
-        - application/xml
         - application/json
       parameters:
         - in: body
@@ -44,10 +42,6 @@ paths:
       responses:
         '405':
           description: Invalid input
-      security:
-        - hotel_auth:
-            - 'write:hotel'
-            - 'read:hotel'
     put:
       tags:
         - hotel
@@ -56,9 +50,7 @@ paths:
       operationId: updateHotel
       consumes:
         - application/json
-        - application/xml
       produces:
-        - application/xml
         - application/json
       parameters:
         - in: body
@@ -74,10 +66,6 @@ paths:
           description: Hotel not found
         '405':
           description: Validation exception
-      security:
-        - hotel_auth:
-            - 'write:hotel'
-            - 'read:hotel'
   '/hotel/{hotelId}':
     get:
       tags:
@@ -86,7 +74,6 @@ paths:
       description: Returns a single hotel
       operationId: getHotelById
       produces:
-        - application/xml
         - application/json
       parameters:
         - name: hotelId
@@ -104,8 +91,6 @@ paths:
           description: Invalid ID supplied
         '404':
           description: Hotel not found
-      security:
-        - api_key: []
     delete:
       tags:
         - hotel
@@ -113,7 +98,6 @@ paths:
       description: ''
       operationId: deleteHotel
       produces:
-        - application/xml
         - application/json
       parameters:
         - name: api_key
@@ -131,10 +115,6 @@ paths:
           description: Invalid ID supplied
         '404':
           description: Hotel not found
-      security:
-        - hotel_auth:
-            - 'write:hotel'
-            - 'read:hotel'
   '/hotel/{hotelId}/availableRooms':
     post:
       tags:
@@ -143,7 +123,6 @@ paths:
       description: Returns a list of rooms available
       operationId: getAvailableRooms
       produces:
-        - application/xml
         - application/json
       parameters:
         - name: hotelId
@@ -167,8 +146,6 @@ paths:
           description: Invalid ID supplied
         '404':
           description: Hotel not found
-      security:
-        - api_key: []
   /room:
     post:
       tags:
@@ -192,10 +169,6 @@ paths:
       responses:
         '405':
           description: Invalid input
-      security:
-        - hotel_auth:
-            - 'write:hotel'
-            - 'read:hotel'
     put:
       tags:
         - room
@@ -204,9 +177,7 @@ paths:
       operationId: updateRoom
       consumes:
         - application/json
-        - application/xml
       produces:
-        - application/xml
         - application/json
       parameters:
         - in: body
@@ -222,10 +193,6 @@ paths:
           description: Room not found
         '405':
           description: Validation exception
-      security:
-        - hotel_auth:
-            - 'write:hotel'
-            - 'read:hotel'
   '/room/{roomId}':
     get:
       tags:
@@ -234,7 +201,6 @@ paths:
       description: Returns a single room
       operationId: getRoomById
       produces:
-        - application/xml
         - application/json
       parameters:
         - name: roomId
@@ -252,8 +218,6 @@ paths:
           description: Invalid ID supplied
         '404':
           description: Room not found
-      security:
-        - api_key: []
     delete:
       tags:
         - room
@@ -261,7 +225,6 @@ paths:
       description: ''
       operationId: deleteRoom
       produces:
-        - application/xml
         - application/json
       parameters:
         - name: api_key
@@ -279,10 +242,6 @@ paths:
           description: Invalid ID supplied
         '404':
           description: Hotel not found
-      security:
-        - hotel_auth:
-            - 'write:hotel'
-            - 'read:hotel'
   '/room/{roomId}/uploadImage':
     post:
       tags:
@@ -316,10 +275,6 @@ paths:
           description: successful operation
           schema:
             $ref: '#/definitions/ApiResponse'
-      security:
-        - hotel_auth:
-            - 'write:hotel'
-            - 'read:hotel'
   /room/findRoom:
     post:
       tags:
@@ -329,9 +284,7 @@ paths:
       operationId: findRoom
       consumes:
         - application/json
-        - application/xml
       produces:
-        - application/xml
         - application/json
       parameters:
         - in: body
@@ -343,10 +296,6 @@ paths:
       responses:
         '405':
           description: Invalid input
-      security:
-        - hotel_auth:
-            - 'write:hotel'
-            - 'read:hotel'
   /reservation/bookRoom:
     post:
       tags:
@@ -355,7 +304,6 @@ paths:
       description: Returns a list of rooms available
       operationId: bookRoom
       produces:
-        - application/xml
         - application/json
       parameters:
         - name: hotelId
@@ -379,20 +327,6 @@ paths:
           description: Invalid ID supplied
         '404':
           description: Hotel not found
-      security:
-        - api_key: []
-securityDefinitions:
-  hotel_auth:
-    type: oauth2
-    authorizationUrl: 'http://petstore.swagger.io/oauth/dialog'
-    flow: implicit
-    scopes:
-      'write:hotel': modify hotel in your account
-      'read:hotel': read your hotels
-  api_key:
-    type: apiKey
-    name: api_key
-    in: header
 definitions:
   ApiResponse:
     type: object
@@ -408,7 +342,6 @@ definitions:
     type: object
     required:
       - name
-      - city
     properties:
       hotelId:
         type: integer
@@ -425,11 +358,8 @@ definitions:
       phone:
         type: string
         example: (303) 555-STAY
-      starts:
+      stars:
         type: integer
-        example: The Landmark
-    xml:
-      name: Hotel
   Room:
     type: object
     required:
@@ -447,9 +377,6 @@ definitions:
         example: 1 bed suite with King
       photoUrls:
         type: array
-        xml:
-          name: photoUrl
-          wrapped: true
         items:
           type: string
       startAvailDate:
@@ -458,30 +385,18 @@ definitions:
       endAvailDate:
         type: string
         format: date
-      status:
-        type: string
-        description: room status
-        enum:
-          - available
-          - reserved
-    xml:
-      name: Room
+      maxGuests:
+        type: integer
   Reservation:
     type: object
+    required:
+      - roomId
+      - startDate
+      - endDate
+      - guests
     properties:
-      startDate:
-        type: string
-        format: date
-      endDate:
-        type: string
-        format: date
-      guests:
-        type: string
       roomId:
         type: string
-  RoomQuery:
-    type: object
-    properties:
       startDate:
         type: string
         format: date
@@ -489,7 +404,31 @@ definitions:
         type: string
         format: date
       guests:
+        type: array
+        items:
+          type: object
+          properties:
+            name:
+              type: string
+            age:
+              type: integer
+  RoomQuery:
+    type: object
+    required:
+      - startDate
+      - endDate
+    properties:
+      hotelName:
         type: string
+        example: The Landmark
+      startDate:
+        type: string
+        format: date
+      endDate:
+        type: string
+        format: date
+      guests:
+        type: integer
 externalDocs:
   description: Find out more
   url: 'https://github.com/mcliff1/travel'
