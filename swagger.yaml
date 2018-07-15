@@ -18,6 +18,7 @@ tags:
   - name: reservation
     description: Operations about booking
 schemes:
+  - http
   - https
 paths:
   /hotel:

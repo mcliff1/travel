@@ -1,5 +1,29 @@
 # Travel
 API for proof of concept for room reservation system
+Author: Matt Cliff
+Created: July 14, 2018
+
+## Provide links for each of these
+· How to compile the application
+· How to run your application
+· Examples of the REST calls
+· How to run the test cases
+· Mention anything that was asked but not delivered and why
+
+
+
+## Approach
+
+0. prequisites - text editor of your choice and docker
+1. create swagger.yaml to meet requirements (dockerized swagger-editor)
+2. use swagger-codegen (dockerized) to build framework
+3. add custom implementation to generated framework
+4. use maven (dockerized) to build
+5. use java8 (dockerized) to run
+
+Future enhancements - 
+   create docker image for the runtime, and deploy to AWS ECS cluster
+
 
 ## Requirements
 
