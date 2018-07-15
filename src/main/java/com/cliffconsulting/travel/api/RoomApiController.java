@@ -59,7 +59,10 @@ public class RoomApiController implements RoomApi {
         String accept = request.getHeader("Accept");
         if (accept != null && accept.contains("application/json")) {
             try {
-                return new ResponseEntity<Room>(objectMapper.readValue("{  \"photoUrls\" : [ \"photoUrls\", \"photoUrls\" ],  \"endAvailDate\" : \"2000-01-23\",  \"maxGuests\" : 1,  \"description\" : \"1 bed suite with King\",  \"hotelId\" : 6,  \"roomId\" : 0,  \"startAvailDate\" : \"2000-01-23\"}", Room.class), HttpStatus.NOT_IMPLEMENTED);
+                log.error("getRoomById is not yet implemented");
+                ResponseEntity<Room> retVal = new ResponseEntity<Room>(objectMapper.readValue("{  \"photoUrls\" : [ \"photoUrls\", \"photoUrls\" ],  \"endAvailDate\" : \"2020-12-31\",  \"maxGuests\" : 1,  \"description\" : \"1 bed suite with King\",  \"hotelId\" : 6,  \"roomId\" : 0,  \"startAvailDate\" : \"2018-01-01\"}", Room.class), HttpStatus.OK);
+                log.info("return object:" + retVal);
+                return retVal;
             } catch (IOException e) {
                 log.error("Couldn't serialize response for content type application/json", e);
                 return new ResponseEntity<Room>(HttpStatus.INTERNAL_SERVER_ERROR);
