@@ -1,0 +1,7 @@
+{
+    "groupId" : "com.cliffconsulting.travel",
+    "artifactId" : "travel-api-server",
+    "artifactVersion" : "1.0.0",
+    "apiPackage" : "com.cliffconsulting.travel.api",
+    "modelPackage" : "com.cliffconsulting.travel.model"
+}
