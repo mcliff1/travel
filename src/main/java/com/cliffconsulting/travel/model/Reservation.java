@@ -17,9 +17,12 @@ import javax.validation.constraints.*;
  * Reservation
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-07-15T20:07:07.747Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-07-15T21:16:59.955Z")
 
 public class Reservation   {
+  @JsonProperty("reservationId")
+  private Long reservationId = null;
+
   @JsonProperty("roomId")
   private String roomId = null;
 
@@ -32,6 +35,26 @@ public class Reservation   {
   @JsonProperty("guests")
   @Valid
   private List<ReservationGuests> guests = new ArrayList<ReservationGuests>();
+
+  public Reservation reservationId(Long reservationId) {
+    this.reservationId = reservationId;
+    return this;
+  }
+
+  /**
+   * Get reservationId
+   * @return reservationId
+  **/
+  @ApiModelProperty(value = "")
+
+
+  public Long getReservationId() {
+    return reservationId;
+  }
+
+  public void setReservationId(Long reservationId) {
+    this.reservationId = reservationId;
+  }
 
   public Reservation roomId(String roomId) {
     this.roomId = roomId;
@@ -135,7 +158,8 @@ public class Reservation   {
       return false;
     }
     Reservation reservation = (Reservation) o;
-    return Objects.equals(this.roomId, reservation.roomId) &&
+    return Objects.equals(this.reservationId, reservation.reservationId) &&
+        Objects.equals(this.roomId, reservation.roomId) &&
         Objects.equals(this.startDate, reservation.startDate) &&
         Objects.equals(this.endDate, reservation.endDate) &&
         Objects.equals(this.guests, reservation.guests);
@@ -143,7 +167,7 @@ public class Reservation   {
 
   @Override
   public int hashCode() {
-    return Objects.hash(roomId, startDate, endDate, guests);
+    return Objects.hash(reservationId, roomId, startDate, endDate, guests);
   }
 
   @Override
@@ -151,6 +175,7 @@ public class Reservation   {
     StringBuilder sb = new StringBuilder();
     sb.append("class Reservation {\n");
     
+    sb.append("    reservationId: ").append(toIndentedString(reservationId)).append("\n");
     sb.append("    roomId: ").append(toIndentedString(roomId)).append("\n");
     sb.append("    startDate: ").append(toIndentedString(startDate)).append("\n");
     sb.append("    endDate: ").append(toIndentedString(endDate)).append("\n");

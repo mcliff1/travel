@@ -1,7 +1,7 @@
 package com.cliffconsulting.travel.api;
 
 import com.cliffconsulting.travel.model.Hotel;
-import com.cliffconsulting.travel.model.Reservation;
+import com.cliffconsulting.travel.model.Room;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.*;
 import org.slf4j.Logger;
@@ -21,7 +21,7 @@ import javax.validation.Valid;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.List;
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-07-15T20:07:07.747Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-07-15T21:16:59.955Z")
 
 @Controller
 public class HotelApiController implements HotelApi {
@@ -38,17 +38,7 @@ public class HotelApiController implements HotelApi {
         this.request = request;
     }
 
-    public ResponseEntity<Void> addHotel(@ApiParam(value = "Hotel object that needs to be added" ,required=true )  @Valid @RequestBody Hotel body) {
-        String accept = request.getHeader("Accept");
-        return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
-    }
-
-    public ResponseEntity<Void> deleteHotel(@ApiParam(value = "Hotel id to delete",required=true) @PathVariable("hotelId") Long hotelId,@ApiParam(value = "" ) @RequestHeader(value="api_key", required=false) String apiKey) {
-        String accept = request.getHeader("Accept");
-        return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
-    }
-
-    public ResponseEntity<Hotel> getAvailableRooms(@ApiParam(value = "ID of hotel to return",required=true) @PathVariable("hotelId") Long hotelId,@ApiParam(value = "object that needs to be added" ,required=true )  @Valid @RequestBody Reservation body) {
+    public ResponseEntity<Hotel> addHotel(@ApiParam(value = "Hotel object that needs to be added" ,required=true )  @Valid @RequestBody Hotel body) {
         String accept = request.getHeader("Accept");
         if (accept != null && accept.contains("application/json")) {
             try {
@@ -60,6 +50,25 @@ public class HotelApiController implements HotelApi {
         }
 
         return new ResponseEntity<Hotel>(HttpStatus.NOT_IMPLEMENTED);
+    }
+
+    public ResponseEntity<Void> deleteHotel(@ApiParam(value = "Hotel id to delete",required=true) @PathVariable("hotelId") Long hotelId,@ApiParam(value = "" ) @RequestHeader(value="api_key", required=false) String apiKey) {
+        String accept = request.getHeader("Accept");
+        return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
+    }
+
+    public ResponseEntity<List<Room>> getAvailableRooms(@ApiParam(value = "ID of hotel to return",required=true) @PathVariable("hotelId") Long hotelId) {
+        String accept = request.getHeader("Accept");
+        if (accept != null && accept.contains("application/json")) {
+            try {
+                return new ResponseEntity<List<Room>>(objectMapper.readValue("[ {  \"photoUrls\" : [ \"photoUrls\", \"photoUrls\" ],  \"endAvailDate\" : \"2000-01-23\",  \"maxGuests\" : 1,  \"description\" : \"1 bed suite with King\",  \"hotelId\" : 6,  \"roomId\" : 0,  \"startAvailDate\" : \"2000-01-23\"}, {  \"photoUrls\" : [ \"photoUrls\", \"photoUrls\" ],  \"endAvailDate\" : \"2000-01-23\",  \"maxGuests\" : 1,  \"description\" : \"1 bed suite with King\",  \"hotelId\" : 6,  \"roomId\" : 0,  \"startAvailDate\" : \"2000-01-23\"} ]", List.class), HttpStatus.NOT_IMPLEMENTED);
+            } catch (IOException e) {
+                log.error("Couldn't serialize response for content type application/json", e);
+                return new ResponseEntity<List<Room>>(HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+        }
+
+        return new ResponseEntity<List<Room>>(HttpStatus.NOT_IMPLEMENTED);
     }
 
     public ResponseEntity<Hotel> getHotelById(@ApiParam(value = "ID of hotel to return",required=true) @PathVariable("hotelId") Long hotelId) {

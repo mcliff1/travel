@@ -6,7 +6,7 @@
 package com.cliffconsulting.travel.api;
 
 import com.cliffconsulting.travel.model.Hotel;
-import com.cliffconsulting.travel.model.Reservation;
+import com.cliffconsulting.travel.model.Room;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -22,23 +22,25 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
 import java.util.List;
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-07-15T20:07:07.747Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-07-15T21:16:59.955Z")
 
 @Api(value = "hotel", description = "the hotel API")
 public interface HotelApi {
 
-    @ApiOperation(value = "Add a new hotel to the system", nickname = "addHotel", notes = "", tags={ "hotel", })
+    @ApiOperation(value = "Add a new hotel to the system", nickname = "addHotel", notes = "ignores id in the body", response = Hotel.class, tags={ "hotel", })
     @ApiResponses(value = { 
+        @ApiResponse(code = 200, message = "successful operation", response = Hotel.class),
         @ApiResponse(code = 405, message = "Invalid input") })
     @RequestMapping(value = "/hotel",
         produces = { "application/json" }, 
         consumes = { "application/json" },
         method = RequestMethod.POST)
-    ResponseEntity<Void> addHotel(@ApiParam(value = "Hotel object that needs to be added" ,required=true )  @Valid @RequestBody Hotel body);
+    ResponseEntity<Hotel> addHotel(@ApiParam(value = "Hotel object that needs to be added" ,required=true )  @Valid @RequestBody Hotel body);
 
 
     @ApiOperation(value = "Deletes a Hotel", nickname = "deleteHotel", notes = "", tags={ "hotel", })
     @ApiResponses(value = { 
+        @ApiResponse(code = 200, message = "successfully removed"),
         @ApiResponse(code = 400, message = "Invalid ID supplied"),
         @ApiResponse(code = 404, message = "Hotel not found") })
     @RequestMapping(value = "/hotel/{hotelId}",
@@ -47,15 +49,15 @@ public interface HotelApi {
     ResponseEntity<Void> deleteHotel(@ApiParam(value = "Hotel id to delete",required=true) @PathVariable("hotelId") Long hotelId,@ApiParam(value = "" ) @RequestHeader(value="api_key", required=false) String apiKey);
 
 
-    @ApiOperation(value = "returns available rooms", nickname = "getAvailableRooms", notes = "Returns a list of rooms available", response = Hotel.class, tags={ "hotel", })
+    @ApiOperation(value = "returns available rooms", nickname = "getAvailableRooms", notes = "Returns a list of rooms currently available", response = Room.class, responseContainer = "List", tags={ "hotel", })
     @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "successful operation", response = Hotel.class),
+        @ApiResponse(code = 200, message = "successful operation", response = Room.class, responseContainer = "List"),
         @ApiResponse(code = 400, message = "Invalid ID supplied"),
         @ApiResponse(code = 404, message = "Hotel not found") })
     @RequestMapping(value = "/hotel/{hotelId}/availableRooms",
         produces = { "application/json" }, 
-        method = RequestMethod.POST)
-    ResponseEntity<Hotel> getAvailableRooms(@ApiParam(value = "ID of hotel to return",required=true) @PathVariable("hotelId") Long hotelId,@ApiParam(value = "object that needs to be added" ,required=true )  @Valid @RequestBody Reservation body);
+        method = RequestMethod.GET)
+    ResponseEntity<List<Room>> getAvailableRooms(@ApiParam(value = "ID of hotel to return",required=true) @PathVariable("hotelId") Long hotelId);
 
 
     @ApiOperation(value = "Find hotel by ID", nickname = "getHotelById", notes = "Returns a single hotel", response = Hotel.class, tags={ "hotel", })
@@ -69,11 +71,12 @@ public interface HotelApi {
     ResponseEntity<Hotel> getHotelById(@ApiParam(value = "ID of hotel to return",required=true) @PathVariable("hotelId") Long hotelId);
 
 
-    @ApiOperation(value = "Update an existing hotel", nickname = "updateHotel", notes = "", tags={ "hotel", })
+    @ApiOperation(value = "Update an existing hotel", nickname = "updateHotel", notes = "id is required in the body and must be valid", tags={ "hotel", })
     @ApiResponses(value = { 
+        @ApiResponse(code = 200, message = "successful operation"),
         @ApiResponse(code = 400, message = "Invalid ID supplied"),
         @ApiResponse(code = 404, message = "Hotel not found"),
-        @ApiResponse(code = 405, message = "Validation exception") })
+        @ApiResponse(code = 405, message = "Input Validation exception") })
     @RequestMapping(value = "/hotel",
         produces = { "application/json" }, 
         consumes = { "application/json" },

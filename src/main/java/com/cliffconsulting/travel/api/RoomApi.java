@@ -24,23 +24,25 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
 import java.util.List;
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-07-15T20:07:07.747Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-07-15T21:16:59.955Z")
 
 @Api(value = "room", description = "the room API")
 public interface RoomApi {
 
-    @ApiOperation(value = "Add a new room to the system", nickname = "addRoom", notes = "", tags={ "room", })
+    @ApiOperation(value = "Add a new room to the system", nickname = "addRoom", notes = "", response = Room.class, tags={ "room", })
     @ApiResponses(value = { 
+        @ApiResponse(code = 200, message = "successful operation", response = Room.class),
         @ApiResponse(code = 405, message = "Invalid input") })
     @RequestMapping(value = "/room",
-        produces = { "application/xml", "application/json" }, 
-        consumes = { "application/json", "application/xml" },
+        produces = { "application/json" }, 
+        consumes = { "application/json" },
         method = RequestMethod.POST)
-    ResponseEntity<Void> addRoom(@ApiParam(value = "Room object that needs to be added" ,required=true )  @Valid @RequestBody Room body);
+    ResponseEntity<Room> addRoom(@ApiParam(value = "Room object that needs to be added" ,required=true )  @Valid @RequestBody Room body);
 
 
     @ApiOperation(value = "Deletes a Room", nickname = "deleteRoom", notes = "", tags={ "room", })
     @ApiResponses(value = { 
+        @ApiResponse(code = 200, message = "successful operation"),
         @ApiResponse(code = 400, message = "Invalid ID supplied"),
         @ApiResponse(code = 404, message = "Hotel not found") })
     @RequestMapping(value = "/room/{roomId}",
@@ -49,14 +51,15 @@ public interface RoomApi {
     ResponseEntity<Void> deleteRoom(@ApiParam(value = "Room id to delete",required=true) @PathVariable("roomId") Long roomId,@ApiParam(value = "" ) @RequestHeader(value="api_key", required=false) String apiKey);
 
 
-    @ApiOperation(value = "finds a room", nickname = "findRoom", notes = "", tags={ "room", })
+    @ApiOperation(value = "finds a room", nickname = "findRoom", notes = "returns list of available rooms that meet the input search critera RoomQuery", response = Room.class, responseContainer = "List", tags={ "room", })
     @ApiResponses(value = { 
+        @ApiResponse(code = 200, message = "successful operation", response = Room.class, responseContainer = "List"),
         @ApiResponse(code = 405, message = "Invalid input") })
     @RequestMapping(value = "/room/findRoom",
         produces = { "application/json" }, 
         consumes = { "application/json" },
         method = RequestMethod.POST)
-    ResponseEntity<Void> findRoom(@ApiParam(value = "Room object that needs to be added" ,required=true )  @Valid @RequestBody RoomQuery body);
+    ResponseEntity<List<Room>> findRoom(@ApiParam(value = "Room object that needs to be added" ,required=true )  @Valid @RequestBody RoomQuery body);
 
 
     @ApiOperation(value = "Find room by ID", nickname = "getRoomById", notes = "Returns a single room", response = Room.class, tags={ "room", })
@@ -72,6 +75,7 @@ public interface RoomApi {
 
     @ApiOperation(value = "Update an existing room", nickname = "updateRoom", notes = "", tags={ "room", })
     @ApiResponses(value = { 
+        @ApiResponse(code = 200, message = "successful operation"),
         @ApiResponse(code = 400, message = "Invalid ID supplied"),
         @ApiResponse(code = 404, message = "Room not found"),
         @ApiResponse(code = 405, message = "Validation exception") })
@@ -84,7 +88,8 @@ public interface RoomApi {
 
     @ApiOperation(value = "uploads an image", nickname = "uploadFile", notes = "", response = ModelApiResponse.class, tags={ "room", })
     @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "successful operation", response = ModelApiResponse.class) })
+        @ApiResponse(code = 200, message = "successful operation", response = ModelApiResponse.class),
+        @ApiResponse(code = 404, message = "Room not found") })
     @RequestMapping(value = "/room/{roomId}/uploadImage",
         produces = { "application/json" }, 
         consumes = { "multipart/form-data" },

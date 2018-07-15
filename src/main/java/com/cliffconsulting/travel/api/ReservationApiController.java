@@ -1,6 +1,5 @@
 package com.cliffconsulting.travel.api;
 
-import com.cliffconsulting.travel.model.Hotel;
 import com.cliffconsulting.travel.model.Reservation;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.*;
@@ -21,7 +20,7 @@ import javax.validation.Valid;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.List;
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-07-15T20:07:07.747Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-07-15T21:16:59.955Z")
 
 @Controller
 public class ReservationApiController implements ReservationApi {
@@ -38,18 +37,37 @@ public class ReservationApiController implements ReservationApi {
         this.request = request;
     }
 
-    public ResponseEntity<Hotel> bookRoom(@ApiParam(value = "ID of hotel to return",required=true) @PathVariable("hotelId") Long hotelId,@ApiParam(value = "object that needs to be added" ,required=true )  @Valid @RequestBody Reservation body) {
+    public ResponseEntity<Reservation> bookRoom(@ApiParam(value = "ID of hotel to return",required=true) @PathVariable("hotelId") Long hotelId,@ApiParam(value = "object that needs to be added" ,required=true )  @Valid @RequestBody Reservation body) {
         String accept = request.getHeader("Accept");
         if (accept != null && accept.contains("application/json")) {
             try {
-                return new ResponseEntity<Hotel>(objectMapper.readValue("{  \"address\" : \"123 South Main Street\",  \"city\" : \"Denver\",  \"phone\" : \"(303) 555-STAY\",  \"name\" : \"The Landmark\",  \"hotelId\" : 0,  \"stars\" : 6}", Hotel.class), HttpStatus.NOT_IMPLEMENTED);
+                return new ResponseEntity<Reservation>(objectMapper.readValue("{  \"reservationId\" : 0,  \"endDate\" : \"2000-01-23\",  \"guests\" : [ {    \"name\" : \"name\",    \"age\" : 6  }, {    \"name\" : \"name\",    \"age\" : 6  } ],  \"roomId\" : \"roomId\",  \"startDate\" : \"2000-01-23\"}", Reservation.class), HttpStatus.NOT_IMPLEMENTED);
             } catch (IOException e) {
                 log.error("Couldn't serialize response for content type application/json", e);
-                return new ResponseEntity<Hotel>(HttpStatus.INTERNAL_SERVER_ERROR);
+                return new ResponseEntity<Reservation>(HttpStatus.INTERNAL_SERVER_ERROR);
             }
         }
 
-        return new ResponseEntity<Hotel>(HttpStatus.NOT_IMPLEMENTED);
+        return new ResponseEntity<Reservation>(HttpStatus.NOT_IMPLEMENTED);
+    }
+
+    public ResponseEntity<Void> deleteReservation(@ApiParam(value = "reservation id to delete",required=true) @PathVariable("reservationId") Long reservationId,@ApiParam(value = "" ) @RequestHeader(value="api_key", required=false) String apiKey) {
+        String accept = request.getHeader("Accept");
+        return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
+    }
+
+    public ResponseEntity<Reservation> getReservationById(@ApiParam(value = "ID of reservation to return",required=true) @PathVariable("reservationId") Long reservationId) {
+        String accept = request.getHeader("Accept");
+        if (accept != null && accept.contains("application/json")) {
+            try {
+                return new ResponseEntity<Reservation>(objectMapper.readValue("{  \"reservationId\" : 0,  \"endDate\" : \"2000-01-23\",  \"guests\" : [ {    \"name\" : \"name\",    \"age\" : 6  }, {    \"name\" : \"name\",    \"age\" : 6  } ],  \"roomId\" : \"roomId\",  \"startDate\" : \"2000-01-23\"}", Reservation.class), HttpStatus.NOT_IMPLEMENTED);
+            } catch (IOException e) {
+                log.error("Couldn't serialize response for content type application/json", e);
+                return new ResponseEntity<Reservation>(HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+        }
+
+        return new ResponseEntity<Reservation>(HttpStatus.NOT_IMPLEMENTED);
     }
 
 }

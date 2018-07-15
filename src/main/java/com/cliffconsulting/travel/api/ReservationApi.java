@@ -5,7 +5,6 @@
  */
 package com.cliffconsulting.travel.api;
 
-import com.cliffconsulting.travel.model.Hotel;
 import com.cliffconsulting.travel.model.Reservation;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
@@ -22,19 +21,41 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
 import java.util.List;
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-07-15T20:07:07.747Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-07-15T21:16:59.955Z")
 
 @Api(value = "reservation", description = "the reservation API")
 public interface ReservationApi {
 
-    @ApiOperation(value = "returns available rooms", nickname = "bookRoom", notes = "Returns a list of rooms available", response = Hotel.class, tags={ "reservation", })
+    @ApiOperation(value = "creates a reservation for the requested room", nickname = "bookRoom", notes = "Returns a list of rooms available", response = Reservation.class, tags={ "reservation", })
     @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "successful operation", response = Hotel.class),
+        @ApiResponse(code = 200, message = "successful operation", response = Reservation.class),
         @ApiResponse(code = 400, message = "Invalid ID supplied"),
         @ApiResponse(code = 404, message = "Hotel not found") })
     @RequestMapping(value = "/reservation/bookRoom",
         produces = { "application/json" }, 
         method = RequestMethod.POST)
-    ResponseEntity<Hotel> bookRoom(@ApiParam(value = "ID of hotel to return",required=true) @PathVariable("hotelId") Long hotelId,@ApiParam(value = "object that needs to be added" ,required=true )  @Valid @RequestBody Reservation body);
+    ResponseEntity<Reservation> bookRoom(@ApiParam(value = "ID of hotel to return",required=true) @PathVariable("hotelId") Long hotelId,@ApiParam(value = "object that needs to be added" ,required=true )  @Valid @RequestBody Reservation body);
+
+
+    @ApiOperation(value = "Deletes a reservation", nickname = "deleteReservation", notes = "", tags={ "reservation", })
+    @ApiResponses(value = { 
+        @ApiResponse(code = 200, message = "successfully removed"),
+        @ApiResponse(code = 400, message = "Invalid ID supplied"),
+        @ApiResponse(code = 404, message = "reservation not found") })
+    @RequestMapping(value = "/reservation/{reservationId}",
+        produces = { "application/json" }, 
+        method = RequestMethod.DELETE)
+    ResponseEntity<Void> deleteReservation(@ApiParam(value = "reservation id to delete",required=true) @PathVariable("reservationId") Long reservationId,@ApiParam(value = "" ) @RequestHeader(value="api_key", required=false) String apiKey);
+
+
+    @ApiOperation(value = "Find reservation by ID", nickname = "getReservationById", notes = "Returns a single reservation", response = Reservation.class, tags={ "reservation", })
+    @ApiResponses(value = { 
+        @ApiResponse(code = 200, message = "successful operation", response = Reservation.class),
+        @ApiResponse(code = 400, message = "Invalid ID supplied"),
+        @ApiResponse(code = 404, message = "reservation not found") })
+    @RequestMapping(value = "/reservation/{reservationId}",
+        produces = { "application/json" }, 
+        method = RequestMethod.GET)
+    ResponseEntity<Reservation> getReservationById(@ApiParam(value = "ID of reservation to return",required=true) @PathVariable("reservationId") Long reservationId);
 
 }
