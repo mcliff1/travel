@@ -1,6 +1,7 @@
 package com.cliffconsulting.travel.api;
 
 import com.cliffconsulting.travel.model.Reservation;
+import com.cliffconsulting.travel.service.ReservationService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.*;
 import org.slf4j.Logger;

@@ -8,7 +8,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-//@Table(name="hotel")
 @Entity
 public class Hotel implements Serializable { 
 
@@ -22,7 +21,7 @@ public class Hotel implements Serializable {
     @Column(name="hotel_nm")
     private String name;
 
-    @Column(name="address")    
+    @Column(name="hotel_address")    
     private String address;
 
     @Column(name="city")    

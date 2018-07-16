@@ -51,18 +51,6 @@ public class HotelApiController implements HotelApi {
 
     public ResponseEntity<Hotel> addHotel(@ApiParam(value = "Hotel object that needs to be added" ,required=true )  @Valid @RequestBody Hotel body) {
         String accept = request.getHeader("Accept");
-/*
-        if (accept != null && accept.contains("application/json")) {
-            try {
-                return new ResponseEntity<Hotel>(objectMapper.readValue("{  \"address\" : \"123 South Main Street\",  \"city\" : \"Denver\",  \"phone\" : \"(303) 555-STAY\",  \"name\" : \"The Landmark\",  \"hotelId\" : 0,  \"stars\" : 6}", Hotel.class), HttpStatus.NOT_IMPLEMENTED);
-            } catch (IOException e) {
-                log.error("Couldn't serialize response for content type application/json", e);
-                return new ResponseEntity<Hotel>(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-        }
-
-        return new ResponseEntity<Hotel>(HttpStatus.NOT_IMPLEMENTED);
-*/
         final String METHOD = "add():";
         Hotel hotel = hotelService.addHotel(body);
         return new ResponseEntity<Hotel>(hotel, HttpStatus.OK);
@@ -74,6 +62,9 @@ public class HotelApiController implements HotelApi {
     public ResponseEntity<Void> deleteHotel(@ApiParam(value = "Hotel id to delete",required=true) @PathVariable("hotelId") Long hotelId,@ApiParam(value = "" ) @RequestHeader(value="api_key", required=false) String apiKey) {
         final String METHOD = "delete():";
         String accept = request.getHeader("Accept");
+        //if (!hotelService.existsById(hotelId)) {
+        //    return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
+        //}
         hotelService.deleteHotel(hotelId);
         return new ResponseEntity<Void>(HttpStatus.OK);
     }

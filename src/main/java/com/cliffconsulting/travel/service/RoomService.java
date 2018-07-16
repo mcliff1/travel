@@ -13,6 +13,10 @@ public class RoomService {
     @Autowired 
     RoomRepository repo;
 
+    public boolean existsById(long roomId) {
+        return repo.existsById(Long.valueOf(roomId));
+    }
+
     public Room getRoomById(long roomId) {
         com.cliffconsulting.travel.entity.Room roomDO = repo.findOne(roomId);
         Room room = new Room();
@@ -35,8 +39,8 @@ public class RoomService {
         repo.save(roomDO);
     }
 
-    public void deleteRoom(long roomId) {
-        repo.delete(roomId);
+    public boolean deleteRoom(long roomId) {
+        return repo.deleteById(Long.valueOf(roomId));
     }
 
 }
