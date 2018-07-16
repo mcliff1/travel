@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -27,6 +28,9 @@ import java.util.List;
 @CrossOrigin
 @Controller
 public class ReservationApiController implements ReservationApi {
+
+    @Autowired
+    ReservationService reservationService;
 
     private static final Logger log = LoggerFactory.getLogger(ReservationApiController.class);
 
@@ -54,23 +58,21 @@ public class ReservationApiController implements ReservationApi {
         return new ResponseEntity<Reservation>(HttpStatus.NOT_IMPLEMENTED);
     }
 
+
+
     public ResponseEntity<Void> deleteReservation(@ApiParam(value = "reservation id to delete",required=true) @PathVariable("reservationId") Long reservationId,@ApiParam(value = "" ) @RequestHeader(value="api_key", required=false) String apiKey) {
         String accept = request.getHeader("Accept");
-        return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
+        if (!reservationService.exists(reservationId)) {
+            return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
+        }
+        reservationService.deleteReservation(reservationId);
+        return new ResponseEntity<Void>(HttpStatus.OK);
     }
 
     public ResponseEntity<Reservation> getReservationById(@ApiParam(value = "ID of reservation to return",required=true) @PathVariable("reservationId") Long reservationId) {
-        String accept = request.getHeader("Accept");
-        if (accept != null && accept.contains("application/json")) {
-            try {
-                return new ResponseEntity<Reservation>(objectMapper.readValue("{  \"reservationId\" : 0,  \"endDate\" : \"2000-01-23\",  \"guests\" : [ {    \"name\" : \"name\",    \"age\" : 6  }, {    \"name\" : \"name\",    \"age\" : 6  } ],  \"roomId\" : \"roomId\",  \"startDate\" : \"2000-01-23\"}", Reservation.class), HttpStatus.NOT_IMPLEMENTED);
-            } catch (IOException e) {
-                log.error("Couldn't serialize response for content type application/json", e);
-                return new ResponseEntity<Reservation>(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-        }
-
-        return new ResponseEntity<Reservation>(HttpStatus.NOT_IMPLEMENTED);
+        Reservation reservation = reservationService.getReservationById(reservationId);
+        if (reservation == null) { return  new ResponseEntity<Reservation>(HttpStatus.NOT_IMPLEMENTED); }
+        return new ResponseEntity<Reservation>(reservation, HttpStatus.OK);
     }
 
 }

@@ -7,6 +7,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 
 @Entity
 public class Hotel implements Serializable { 
@@ -21,7 +23,7 @@ public class Hotel implements Serializable {
     @Column(name="hotel_nm")
     private String name;
 
-    @Column(name="hotel_address")    
+    @Column(name="hotel_address")
     private String address;
 
     @Column(name="city")    
@@ -52,11 +54,11 @@ public class Hotel implements Serializable {
         this.name = name;
     }
 
-    public String getAdress() {
+    public String getAddress() {
         return address;
     }
 
-    public void setAdress(String address) {
+    public void setAddress(String address) {
         this.address = address;
     }
 

@@ -1,11 +1,14 @@
 package com.cliffconsulting.travel.service;
 
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.cliffconsulting.travel.entity.RoomRepository;
 import com.cliffconsulting.travel.model.Room;
+import com.cliffconsulting.travel.model.RoomQuery;
 
 @Service
 public class RoomService { 
@@ -41,6 +44,20 @@ public class RoomService {
 
     public void deleteRoom(long roomId) {
         repo.delete(roomId);
+    }
+
+
+    /**
+     * Key business logic for the system
+     *  make list of room_id, closest_previous_end_date d1, and subsequent_start_date d2
+     *  and filter where query.start >= d1 and query.end <= d2 
+     */
+    public List<Room> findRoom(RoomQuery query) {
+        final String METHOD = "findRoom():" + query;
+
+        List<Room> list = new ArrayList<Room>();
+
+        return list;
     }
 
 }

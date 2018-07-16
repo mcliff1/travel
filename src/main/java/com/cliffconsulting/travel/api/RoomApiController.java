@@ -62,17 +62,9 @@ public class RoomApiController implements RoomApi {
     }
 
     public ResponseEntity<List<Room>> findRoom(@ApiParam(value = "Room object that needs to be added" ,required=true )  @Valid @RequestBody RoomQuery body) {
-        String accept = request.getHeader("Accept");
-        if (accept != null && accept.contains("application/json")) {
-            try {
-                return new ResponseEntity<List<Room>>(objectMapper.readValue("[ {  \"photoUrls\" : [ \"photoUrls\", \"photoUrls\" ],  \"endAvailDate\" : \"2000-01-23\",  \"maxGuests\" : 1,  \"description\" : \"1 bed suite with King\",  \"hotelId\" : 6,  \"roomId\" : 0,  \"startAvailDate\" : \"2000-01-23\"}, {  \"photoUrls\" : [ \"photoUrls\", \"photoUrls\" ],  \"endAvailDate\" : \"2000-01-23\",  \"maxGuests\" : 1,  \"description\" : \"1 bed suite with King\",  \"hotelId\" : 6,  \"roomId\" : 0,  \"startAvailDate\" : \"2000-01-23\"} ]", List.class), HttpStatus.NOT_IMPLEMENTED);
-            } catch (IOException e) {
-                log.error("Couldn't serialize response for content type application/json", e);
-                return new ResponseEntity<List<Room>>(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-        }
+        List<Room> roomList = roomService.findRoom(body);
 
-        return new ResponseEntity<List<Room>>(HttpStatus.NOT_IMPLEMENTED);
+        return new ResponseEntity<List<Room>>(roomList, HttpStatus.OK);
     }
 
     public ResponseEntity<Room> getRoomById(@ApiParam(value = "ID of room to return",required=true) @PathVariable("roomId") Long roomId) {

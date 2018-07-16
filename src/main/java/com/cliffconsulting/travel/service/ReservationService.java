@@ -13,6 +13,10 @@ public class ReservationService {
     @Autowired 
     ReservationRepository repo;
 
+    public boolean exists(long reservationId) {
+        return repo.exists(reservationId);
+    }
+
     public Reservation getReservationById(long reservationId) {
         com.cliffconsulting.travel.entity.Reservation reservationDO = repo.findOne(reservationId);
         Reservation reservation = new Reservation();
