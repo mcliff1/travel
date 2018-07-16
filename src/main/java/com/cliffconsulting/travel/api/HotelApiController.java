@@ -71,18 +71,22 @@ public class HotelApiController implements HotelApi {
         return new ResponseEntity<List<Room>>(HttpStatus.NOT_IMPLEMENTED);
     }
 
-    public ResponseEntity<Hotel> getHotelById(@ApiParam(value = "ID of hotel to return",required=true) @PathVariable("hotelId") Long hotelId) {
-        String accept = request.getHeader("Accept");
-        if (accept != null && accept.contains("application/json")) {
-            try {
-                return new ResponseEntity<Hotel>(objectMapper.readValue("{  \"address\" : \"123 South Main Street\",  \"city\" : \"Denver\",  \"phone\" : \"(303) 555-STAY\",  \"name\" : \"The Landmark\",  \"hotelId\" : 0,  \"stars\" : 6}", Hotel.class), HttpStatus.NOT_IMPLEMENTED);
-            } catch (IOException e) {
-                log.error("Couldn't serialize response for content type application/json", e);
-                return new ResponseEntity<Hotel>(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-        }
 
-        return new ResponseEntity<Hotel>(HttpStatus.NOT_IMPLEMENTED);
+
+    /** 
+     * business logic queries the local datastore
+     *  - removed logic about requiring accept to contain application/json
+     */
+    public ResponseEntity<Hotel> getHotelById(@ApiParam(value = "ID of hotel to return",required=true) @PathVariable("hotelId") Long hotelId) {
+        final String METHOD = "getHotelById():";
+        log.info(METHOD + "begin");
+
+        try {
+            return new ResponseEntity<Hotel>(objectMapper.readValue("{  \"address\" : \"123 South Main Street\",  \"city\" : \"Denver\",  \"phone\" : \"(303) 555-STAY\",  \"name\" : \"The Landmark\",  \"hotelId\" : 0,  \"stars\" : 6}", Hotel.class), HttpStatus.OK);
+        } catch (IOException e) {
+            log.error(METHOD + "Couldn't serialize response for content type application/json", e);
+            return new ResponseEntity<Hotel>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     public ResponseEntity<Void> updateHotel(@ApiParam(value = "Hotel object that needs to be updated" ,required=true )  @Valid @RequestBody Hotel body) {
