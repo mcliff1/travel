@@ -2,6 +2,8 @@ package com.cliffconsulting.travel.api;
 
 import com.cliffconsulting.travel.model.Hotel;
 import com.cliffconsulting.travel.model.Room;
+//import com.cliffconsulting.travel.service.HotelService;
+import com.cliffconsulting.travel.service.IHotelService;
 import com.cliffconsulting.travel.entity.HotelRepository;
 
 
@@ -27,6 +29,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 //import org.modelmapper.ModelMapper;
 import org.springframework.beans.BeanUtils;
 
+
 import javax.validation.constraints.*;
 import javax.validation.Valid;
 import javax.servlet.http.HttpServletRequest;
@@ -38,14 +41,14 @@ import java.util.List;
 @Controller
 public class HotelApiController implements HotelApi {
 
+    //@Autowired
+    //HotelRepository repo; 
+
     @Autowired
-    HotelRepository repo; 
+    IHotelService hotelService; 
 
     @Autowired
     JdbcTemplate jdbcTemplate;
-
-    //@Autowired
-    //ModelMapper modelMapper;
 
     private static final Logger log = LoggerFactory.getLogger(HotelApiController.class);
 
@@ -107,16 +110,15 @@ public class HotelApiController implements HotelApi {
             //log.info("retrieved:" + obj);
             //log.info("retrieved2:" + obj.getClass().getName());
 
-            log.info("all hotels -> {}", repo.findAll());
+            //log.info("all hotels -> {}", repo.findAll());
 
-            //ModelMapper modelMapper = new ModelMapper();
-            com.cliffconsulting.travel.entity.Hotel hotelDO = repo.getOne(hotelId);
-            log.info("got a hotelDO:" + hotelDO);
+            //com.cliffconsulting.travel.entity.Hotel hotelDO = repo.getOne(hotelId);
+            //log.info("got a hotelDO:" + hotelDO);
 
-            Hotel hotelObj = new Hotel();
-            BeanUtils.copyProperties(hotelDO, hotelObj);
+            //Hotel hotelObj = new Hotel();
+            //BeanUtils.copyProperties(hotelDO, hotelObj);
+            Hotel hotelObj = hotelService.getHotelById(hotelId);
             log.info("got a hotelObj:" + hotelObj);
-
             
             ResponseEntity<Hotel> hotel =  new ResponseEntity<Hotel>(hotelObj, HttpStatus.OK);
             log.info("got a hotel:" + hotel);

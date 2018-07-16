@@ -12,7 +12,9 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @SpringBootApplication
 @EnableSwagger2
-@ComponentScan(basePackages = { "io.swagger", "com.cliffconsulting.travel.api" , "com.cliffconsulting.travel.entity", "io.swagger.configuration"})
+@ComponentScan(basePackages = { "io.swagger", "com.cliffconsulting.travel.api", "com.cliffconsulting.travel.entity", "com.cliffconsulting.travel.service", "io.swagger.configuration"})
+//@ComponentScan(basePackages = { "io.swagger", "com.cliffconsulting.travel", "com"io.swagger.configuration"})
+//@ComponentScan
 @EntityScan(basePackages={"com.cliffconsulting.travel.entity"})
 @EnableJpaRepositories(basePackages={"com.cliffconsulting.travel.entity"})
 public class Swagger2SpringBoot implements CommandLineRunner {
