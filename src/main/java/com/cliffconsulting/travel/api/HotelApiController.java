@@ -36,8 +36,8 @@ import java.util.List;
 @Controller
 public class HotelApiController implements HotelApi {
 
-    //@Autowired
-    //HotelRepository repo; 
+    @Autowired
+    HotelRepository repo; 
 
     @Autowired
     JdbcTemplate jdbcTemplate;
