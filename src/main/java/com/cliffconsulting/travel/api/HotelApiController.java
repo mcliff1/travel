@@ -2,6 +2,9 @@ package com.cliffconsulting.travel.api;
 
 import com.cliffconsulting.travel.model.Hotel;
 import com.cliffconsulting.travel.model.Room;
+import com.cliffconsulting.travel.entity.HotelRepository;
+
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.*;
 import org.slf4j.Logger;
@@ -33,6 +36,8 @@ import java.util.List;
 @Controller
 public class HotelApiController implements HotelApi {
 
+    //@Autowired
+    //HotelRepository repo; 
 
     @Autowired
     JdbcTemplate jdbcTemplate;
@@ -97,6 +102,7 @@ public class HotelApiController implements HotelApi {
             log.info("retrieved:" + obj);
             log.info("retrieved2:" + obj.getClass().getName());
 
+            //log.info("all hotels -> {}", repo.findAll());
 
             ResponseEntity<Hotel> hotel =  new ResponseEntity<Hotel>(objectMapper.readValue("{  \"address\" : \"123 South Main Street\",  \"city\" : \"Denver\",  \"phone\" : \"(303) 555-STAY\",  \"name\" : \"The Landmark\",  \"hotelId\" : 0,  \"stars\" : 6}", Hotel.class), HttpStatus.OK);
             log.info("got a hotel:" + hotel);
