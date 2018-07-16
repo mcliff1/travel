@@ -24,6 +24,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 
+//import org.modelmapper.ModelMapper;
+import org.springframework.beans.BeanUtils;
 
 import javax.validation.constraints.*;
 import javax.validation.Valid;
@@ -41,6 +43,9 @@ public class HotelApiController implements HotelApi {
 
     @Autowired
     JdbcTemplate jdbcTemplate;
+
+    //@Autowired
+    //ModelMapper modelMapper;
 
     private static final Logger log = LoggerFactory.getLogger(HotelApiController.class);
 
@@ -98,16 +103,25 @@ public class HotelApiController implements HotelApi {
         log.info(METHOD + "begin");
 
         try {
-            Object obj = jdbcTemplate.queryForObject("SELECT * from hotel", new BeanPropertyRowMapper <Object> (Object.class));
-            log.info("retrieved:" + obj);
-            log.info("retrieved2:" + obj.getClass().getName());
+            //Object obj = jdbcTemplate.queryForObject("SELECT * from hotel", new BeanPropertyRowMapper <Object> (Object.class));
+            //log.info("retrieved:" + obj);
+            //log.info("retrieved2:" + obj.getClass().getName());
 
-            //log.info("all hotels -> {}", repo.findAll());
+            log.info("all hotels -> {}", repo.findAll());
 
-            ResponseEntity<Hotel> hotel =  new ResponseEntity<Hotel>(objectMapper.readValue("{  \"address\" : \"123 South Main Street\",  \"city\" : \"Denver\",  \"phone\" : \"(303) 555-STAY\",  \"name\" : \"The Landmark\",  \"hotelId\" : 0,  \"stars\" : 6}", Hotel.class), HttpStatus.OK);
+            //ModelMapper modelMapper = new ModelMapper();
+            com.cliffconsulting.travel.entity.Hotel hotelDO = repo.getOne(hotelId);
+            log.info("got a hotelDO:" + hotelDO);
+
+            Hotel hotelObj = new Hotel();
+            BeanUtils.copyProperties(hotelDO, hotelObj);
+            log.info("got a hotelObj:" + hotelObj);
+
+            
+            ResponseEntity<Hotel> hotel =  new ResponseEntity<Hotel>(hotelObj, HttpStatus.OK);
             log.info("got a hotel:" + hotel);
             return hotel;
-        } catch (IOException e) {
+        } catch (Exception e) {
             log.error(METHOD + "Couldn't serialize response for content type application/json", e);
             return new ResponseEntity<Hotel>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
