@@ -2,9 +2,7 @@ package com.cliffconsulting.travel.api;
 
 import com.cliffconsulting.travel.model.Hotel;
 import com.cliffconsulting.travel.model.Room;
-//import com.cliffconsulting.travel.service.HotelService;
-import com.cliffconsulting.travel.service.IHotelService;
-import com.cliffconsulting.travel.entity.HotelRepository;
+import com.cliffconsulting.travel.service.HotelService;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -24,11 +22,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
-import org.springframework.jdbc.core.JdbcTemplate;
-
-//import org.modelmapper.ModelMapper;
-import org.springframework.beans.BeanUtils;
-
 
 import javax.validation.constraints.*;
 import javax.validation.Valid;
@@ -41,14 +34,8 @@ import java.util.List;
 @Controller
 public class HotelApiController implements HotelApi {
 
-    //@Autowired
-    //HotelRepository repo; 
-
     @Autowired
-    IHotelService hotelService; 
-
-    @Autowired
-    JdbcTemplate jdbcTemplate;
+    HotelService hotelService; 
 
     private static final Logger log = LoggerFactory.getLogger(HotelApiController.class);
 
@@ -64,6 +51,7 @@ public class HotelApiController implements HotelApi {
 
     public ResponseEntity<Hotel> addHotel(@ApiParam(value = "Hotel object that needs to be added" ,required=true )  @Valid @RequestBody Hotel body) {
         String accept = request.getHeader("Accept");
+/*
         if (accept != null && accept.contains("application/json")) {
             try {
                 return new ResponseEntity<Hotel>(objectMapper.readValue("{  \"address\" : \"123 South Main Street\",  \"city\" : \"Denver\",  \"phone\" : \"(303) 555-STAY\",  \"name\" : \"The Landmark\",  \"hotelId\" : 0,  \"stars\" : 6}", Hotel.class), HttpStatus.NOT_IMPLEMENTED);
@@ -74,11 +62,20 @@ public class HotelApiController implements HotelApi {
         }
 
         return new ResponseEntity<Hotel>(HttpStatus.NOT_IMPLEMENTED);
+*/
+        final String METHOD = "add():";
+        Hotel hotel = hotelService.addHotel(body);
+        return new ResponseEntity<Hotel>(hotel, HttpStatus.OK);
     }
 
+    /**
+     * Deletes a Hotel
+     */
     public ResponseEntity<Void> deleteHotel(@ApiParam(value = "Hotel id to delete",required=true) @PathVariable("hotelId") Long hotelId,@ApiParam(value = "" ) @RequestHeader(value="api_key", required=false) String apiKey) {
+        final String METHOD = "delete():";
         String accept = request.getHeader("Accept");
-        return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
+        hotelService.deleteHotel(hotelId);
+        return new ResponseEntity<Void>(HttpStatus.OK);
     }
 
     public ResponseEntity<List<Room>> getAvailableRooms(@ApiParam(value = "ID of hotel to return",required=true) @PathVariable("hotelId") Long hotelId) {
@@ -106,22 +103,9 @@ public class HotelApiController implements HotelApi {
         log.info(METHOD + "begin");
 
         try {
-            //Object obj = jdbcTemplate.queryForObject("SELECT * from hotel", new BeanPropertyRowMapper <Object> (Object.class));
-            //log.info("retrieved:" + obj);
-            //log.info("retrieved2:" + obj.getClass().getName());
-
-            //log.info("all hotels -> {}", repo.findAll());
-
-            //com.cliffconsulting.travel.entity.Hotel hotelDO = repo.getOne(hotelId);
-            //log.info("got a hotelDO:" + hotelDO);
-
-            //Hotel hotelObj = new Hotel();
-            //BeanUtils.copyProperties(hotelDO, hotelObj);
             Hotel hotelObj = hotelService.getHotelById(hotelId);
-            log.info("got a hotelObj:" + hotelObj);
             
             ResponseEntity<Hotel> hotel =  new ResponseEntity<Hotel>(hotelObj, HttpStatus.OK);
-            log.info("got a hotel:" + hotel);
             return hotel;
         } catch (Exception e) {
             log.error(METHOD + "Couldn't serialize response for content type application/json", e);
@@ -129,9 +113,20 @@ public class HotelApiController implements HotelApi {
         }
     }
 
+    /**
+     * Updates the hotel
+     */
     public ResponseEntity<Void> updateHotel(@ApiParam(value = "Hotel object that needs to be updated" ,required=true )  @Valid @RequestBody Hotel body) {
+        final String METHOD = "updateHotel():";
         String accept = request.getHeader("Accept");
-        return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
+
+        try {
+            hotelService.updateHotel(body);
+            return new ResponseEntity<Void>(HttpStatus.OK);
+        } catch (Exception e) {
+            log.error(METHOD, e);
+            return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
 }
