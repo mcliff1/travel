@@ -18,8 +18,8 @@ public class HotelService {
 
     private static final Logger log = LoggerFactory.getLogger(HotelService.class);
 
-    public Hotel existsById(long hotelId) {
-        return repo.existsById(hotelId);
+    public boolean exists(long hotelId) {
+        return repo.exists(hotelId);
     }
 
     public Hotel getHotelById(long hotelId) {
@@ -39,6 +39,8 @@ public class HotelService {
         log.info(METHOD + "3:" + hotelDO);
         BeanUtils.copyProperties(hotelDO, hotel);
         log.info(METHOD + "4:" + hotel);
+        hotel = getHotelById(hotelDO.getHotelId());
+        log.info(METHOD + "5:" + hotel);
         return hotel;
     }
 
@@ -49,8 +51,10 @@ public class HotelService {
         repo.save(hotelDO);
     }
 
-    public void deleteHotel(long hotelId) {
+    public boolean deleteHotel(long hotelId) {
+        if (!exists(hotelId)) return false;
         repo.delete(hotelId);
+        return true;
     }
 
 }

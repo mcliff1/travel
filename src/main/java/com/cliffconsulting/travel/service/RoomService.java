@@ -14,7 +14,7 @@ public class RoomService {
     RoomRepository repo;
 
     public boolean existsById(long roomId) {
-        return repo.existsById(Long.valueOf(roomId));
+        return repo.exists(roomId);
     }
 
     public Room getRoomById(long roomId) {
@@ -39,8 +39,8 @@ public class RoomService {
         repo.save(roomDO);
     }
 
-    public boolean deleteRoom(long roomId) {
-        return repo.deleteById(Long.valueOf(roomId));
+    public void deleteRoom(long roomId) {
+        repo.delete(roomId);
     }
 
 }
