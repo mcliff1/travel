@@ -16,6 +16,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.JdbcTemplate;
+
+
 import javax.validation.constraints.*;
 import javax.validation.Valid;
 import javax.servlet.http.HttpServletRequest;
@@ -25,6 +30,10 @@ import java.util.List;
 
 @Controller
 public class HotelApiController implements HotelApi {
+
+
+    @Autowired
+    JdbcTemplate jdbcTemplate;
 
     private static final Logger log = LoggerFactory.getLogger(HotelApiController.class);
 
@@ -82,7 +91,14 @@ public class HotelApiController implements HotelApi {
         log.info(METHOD + "begin");
 
         try {
-            return new ResponseEntity<Hotel>(objectMapper.readValue("{  \"address\" : \"123 South Main Street\",  \"city\" : \"Denver\",  \"phone\" : \"(303) 555-STAY\",  \"name\" : \"The Landmark\",  \"hotelId\" : 0,  \"stars\" : 6}", Hotel.class), HttpStatus.OK);
+            Object obj = jdbcTemplate.queryForObject("SELECT * from hotel", new BeanPropertyRowMapper <Object> (Object.class));
+            log.info("retrieved:" + obj);
+            log.info("retrieved2:" + obj.getClasses());
+
+
+            ResponseEntity<Hotel> hotel =  new ResponseEntity<Hotel>(objectMapper.readValue("{  \"address\" : \"123 South Main Street\",  \"city\" : \"Denver\",  \"phone\" : \"(303) 555-STAY\",  \"name\" : \"The Landmark\",  \"hotelId\" : 0,  \"stars\" : 6}", Hotel.class), HttpStatus.OK);
+            log.info("got a hotel:" + hotel);
+            return hotel;
         } catch (IOException e) {
             log.error(METHOD + "Couldn't serialize response for content type application/json", e);
             return new ResponseEntity<Hotel>(HttpStatus.INTERNAL_SERVER_ERROR);

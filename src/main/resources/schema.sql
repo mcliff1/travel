@@ -7,7 +7,7 @@ create table hotel
   phone varchar(16),
   stars integer,
   primary key(hotel_id)
-)
+);
 
 create table room
 (
@@ -19,13 +19,13 @@ create table room
   phone varchar(16),
   stars integer,
   primary key(room_id, hotel_id)
-)
+);
 
 create table roomphoto
 (
   room_id integer not null,
   url varchar(255) not null
-)
+);
 
 create table reservation
 (
@@ -35,7 +35,7 @@ create table reservation
   end_date varchar(255),
   num_guests integer,
   primary key(reservation_id)
-)
+);
 
 create table reservationguest
 (
@@ -44,6 +44,6 @@ create table reservationguest
   name varchar(255) not null,
   age integer,
   primary key(guest_id)
-)
+);
 
 
