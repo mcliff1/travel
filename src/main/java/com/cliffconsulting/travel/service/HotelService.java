@@ -1,8 +1,8 @@
 package com.cliffconsulting.travel.service;
 
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+//import org.slf4j.Logger;
+//import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +16,7 @@ public class HotelService {
     @Autowired 
     HotelRepository repo;
 
-    private static final Logger log = LoggerFactory.getLogger(HotelService.class);
+    //private static final Logger log = LoggerFactory.getLogger(HotelService.class);
 
     public boolean exists(long hotelId) {
         return repo.existsById(hotelId);

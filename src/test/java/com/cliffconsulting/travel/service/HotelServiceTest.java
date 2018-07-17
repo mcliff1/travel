@@ -16,14 +16,15 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
+@ContextConfiguration(classes = {HotelService.class})
 public class HotelServiceTest {
 
     @MockBean
     HotelRepository hotelRepo;
 
-
     //@Autowired
     //HotelService hotelService;
+    HotelService hotelService = new HotelService();
 
     @Test
     public void testHaveAMockRepo() {
