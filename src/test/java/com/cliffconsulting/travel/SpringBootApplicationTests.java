@@ -16,12 +16,17 @@ public class SpringBootApplicationTests {
     @Autowired
     private Config config;
 
-    @Test
-    public void contextLoads() {}
+    //@Test
+    //public void contextLoads() {}
 
     @Configuration
     static class Config {
-
     }
+
+    //@Autowired
+    //private TestRestTemplate restTemplate;
+
+    @Test
+    public void contextLoad() {}
 }
 
