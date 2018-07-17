@@ -9,8 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cliffconsulting.travel.api.ApiException;
+import com.cliffconsulting.travel.entity.RoomPhoto;
+import com.cliffconsulting.travel.entity.RoomPhotoRepository;
 import com.cliffconsulting.travel.entity.RoomRepository;
-import com.cliffconsulting.travel.model.Hotel;
 import com.cliffconsulting.travel.model.Room;
 import com.cliffconsulting.travel.model.RoomQuery;
 
@@ -19,6 +20,9 @@ public class RoomService {
 
     @Autowired 
     RoomRepository repo;
+
+    @Autowired 
+    RoomPhotoRepository photoRepo;
 
     private static final Logger log = LoggerFactory.getLogger(RoomService.class);
 
@@ -76,6 +80,25 @@ public class RoomService {
         repo.deleteById(roomId);
     }
 
+    
+    /**
+     * @param roomId
+     * @param url
+     */
+    public void uploadPhoto(long roomId, String url) {
+    	
+    	RoomPhoto existing = photoRepo.findUrlByRoomId(roomId, url);
+    	RoomPhoto photo = new RoomPhoto();
+    	photo.setRoomId(roomId);
+    	photo.setUrl(url);
+    	
+    	if (existing != null) {
+    		photo.setPhotoId(existing.getPhotoId());
+    	}
+        photoRepo.save(photo);
+    }
+
+    
 
     /**
      * Key business logic for the system
@@ -83,7 +106,8 @@ public class RoomService {
      *  and filter where query.start >= d1 and query.end <= d2 
      */
     public List<Room> findRoom(RoomQuery query) {
-        final String METHOD = "findRoom():" + query;
+        final String METHOD = "findRoom():";
+        log.debug(METHOD + query);
 
         List<Room> list = new ArrayList<Room>();
 

@@ -97,6 +97,14 @@ public class RoomApiController implements RoomApi {
     
     
     public ResponseEntity<ModelApiResponse> uploadFile(@ApiParam(value = "ID of room to update",required=true) @PathVariable("roomId") Long roomId,@ApiParam(value = "Additional data to pass to server") @RequestParam(value="additionalMetadata", required=false)  String additionalMetadata,@ApiParam(value = "file detail") @Valid @RequestPart("file") MultipartFile file) {
+    	final String METHOD = "uploadFile():";
+    	log.error(METHOD + "begin - not implemented");
+    	
+    	// ToDO
+    	//   multipart.getContentType;  getInputStream, getOriginalFilename
+    	//  can I save this to H2 ?
+    	// save as blob with content-Type?? and size
+    	
         String accept = request.getHeader("Accept");
         if (accept != null && accept.contains("application/json")) {
             try {

@@ -36,6 +36,7 @@ public class HotelService {
 
     public Hotel addHotel(Hotel hotel) {
         final String METHOD = "addHotel():";
+        log.debug(METHOD + hotel);
         com.cliffconsulting.travel.entity.Hotel hotelDO = new com.cliffconsulting.travel.entity.Hotel();
         BeanUtils.copyProperties(hotel, hotelDO);
         hotelDO = repo.save(hotelDO);
