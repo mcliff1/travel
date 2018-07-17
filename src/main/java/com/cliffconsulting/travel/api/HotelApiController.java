@@ -16,14 +16,10 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.multipart.MultipartFile;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
 
-import javax.validation.constraints.*;
+//import javax.validation.constraints.*;
 import javax.validation.Valid;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
@@ -61,8 +57,7 @@ public class HotelApiController implements HotelApi {
      * Deletes a Hotel
      */
     public ResponseEntity<Void> deleteHotel(@ApiParam(value = "Hotel id to delete",required=true) @PathVariable("hotelId") Long hotelId,@ApiParam(value = "" ) @RequestHeader(value="api_key", required=false) String apiKey) {
-        final String METHOD = "delete():";
-        String accept = request.getHeader("Accept");
+        //final String METHOD = "delete():";
         //if (!hotelService.existsById(hotelId)) {
         //    return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
         //}
@@ -74,7 +69,9 @@ public class HotelApiController implements HotelApi {
         String accept = request.getHeader("Accept");
         if (accept != null && accept.contains("application/json")) {
             try {
-                return new ResponseEntity<List<Room>>(objectMapper.readValue("[ {  \"photoUrls\" : [ \"photoUrls\", \"photoUrls\" ],  \"endAvailDate\" : \"2000-01-23\",  \"maxGuests\" : 1,  \"description\" : \"1 bed suite with King\",  \"hotelId\" : 6,  \"roomId\" : 0,  \"startAvailDate\" : \"2000-01-23\"}, {  \"photoUrls\" : [ \"photoUrls\", \"photoUrls\" ],  \"endAvailDate\" : \"2000-01-23\",  \"maxGuests\" : 1,  \"description\" : \"1 bed suite with King\",  \"hotelId\" : 6,  \"roomId\" : 0,  \"startAvailDate\" : \"2000-01-23\"} ]", List.class), HttpStatus.NOT_IMPLEMENTED);
+            	List<Room> roomList = objectMapper.readValue("[ {  \"photoUrls\" : [ \"photoUrls\", \"photoUrls\" ],  \"endAvailDate\" : \"2000-01-23\",  \"maxGuests\" : 1,  \"description\" : \"1 bed suite with King\",  \"hotelId\" : 6,  \"roomId\" : 0,  \"startAvailDate\" : \"2000-01-23\"}, {  \"photoUrls\" : [ \"photoUrls\", \"photoUrls\" ],  \"endAvailDate\" : \"2000-01-23\",  \"maxGuests\" : 1,  \"description\" : \"1 bed suite with King\",  \"hotelId\" : 6,  \"roomId\" : 0,  \"startAvailDate\" : \"2000-01-23\"} ]", List.class); 
+            	
+                return new ResponseEntity<List<Room>>(roomList, HttpStatus.NOT_IMPLEMENTED);
             } catch (IOException e) {
                 log.error("Couldn't serialize response for content type application/json", e);
                 return new ResponseEntity<List<Room>>(HttpStatus.INTERNAL_SERVER_ERROR);

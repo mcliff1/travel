@@ -2,11 +2,15 @@ package com.cliffconsulting.travel.service;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.cliffconsulting.travel.api.ApiException;
 import com.cliffconsulting.travel.entity.RoomRepository;
+import com.cliffconsulting.travel.model.Hotel;
 import com.cliffconsulting.travel.model.Room;
 import com.cliffconsulting.travel.model.RoomQuery;
 
@@ -16,6 +20,9 @@ public class RoomService {
     @Autowired 
     RoomRepository repo;
 
+    private static final Logger log = LoggerFactory.getLogger(RoomService.class);
+
+    
     public boolean existsById(long roomId) {
         return repo.existsById(roomId);
     }
@@ -44,12 +51,27 @@ public class RoomService {
     }
 
 
-    public void updateRoom(Room room) {
-        com.cliffconsulting.travel.entity.Room roomDO = new com.cliffconsulting.travel.entity.Room();
-        BeanUtils.copyProperties(room, roomDO);
-        repo.save(roomDO);
-    }
+    public void updateRoom(Room room) throws ApiException {
+    	final String METHOD = "updateRoom():";
+    	log.info(METHOD + room);
+    	try {
+    		if (room.getRoomId() == null) { throw new ApiException(400, "null id"); }
+    		log.info("calling repo on:" + room.getRoomId());
+    		if (!repo.existsById(room.getRoomId())) { throw new ApiException(404, "room not found"); }
+    		
+    		// make the update
+    		com.cliffconsulting.travel.entity.Room roomDO = new com.cliffconsulting.travel.entity.Room();
+            BeanUtils.copyProperties(room, roomDO);
+            repo.save(roomDO);
 
+    	} catch (Exception e) {
+    		if (e instanceof ApiException) { throw e; }
+    		else throw new ApiException(405, e.getMessage());
+    	}
+    }
+    
+    
+    
     public void deleteRoom(long roomId) {
         repo.deleteById(roomId);
     }

@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cliffconsulting.travel.api.ApiException;
-import com.cliffconsulting.travel.api.HotelApiController;
 import com.cliffconsulting.travel.entity.HotelRepository;
 import com.cliffconsulting.travel.model.Hotel;
 

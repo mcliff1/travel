@@ -29,7 +29,7 @@ public class Reservation implements Serializable {
     @Column(name="end_dt")    
     private Date endDate;
 
-    @Column(name="num_guest")    
+    @Column(name="num_guests")    
     private int numberOfGuests;
 
     public Reservation() {

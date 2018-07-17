@@ -1,7 +1,6 @@
 package com.cliffconsulting.travel.api;
 
 import com.cliffconsulting.travel.model.ModelApiResponse;
-import org.springframework.core.io.Resource;
 import com.cliffconsulting.travel.model.Room;
 import com.cliffconsulting.travel.model.RoomQuery;
 import com.cliffconsulting.travel.service.RoomService;
@@ -21,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.constraints.*;
 import javax.validation.Valid;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
@@ -53,7 +51,6 @@ public class RoomApiController implements RoomApi {
     }
 
     public ResponseEntity<Void> deleteRoom(@ApiParam(value = "Room id to delete",required=true) @PathVariable("roomId") Long roomId,@ApiParam(value = "" ) @RequestHeader(value="api_key", required=false) String apiKey) {
-        String accept = request.getHeader("Accept");
         if (!roomService.existsById(roomId)) {
             return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
         }
@@ -74,14 +71,31 @@ public class RoomApiController implements RoomApi {
     }
 
     public ResponseEntity<Void> updateRoom(@ApiParam(value = "Room object that needs to be updated" ,required=true )  @Valid @RequestBody Room body) {
-        String accept = request.getHeader("Accept");
+        final String METHOD = "updateRoom():";
+        log.debug(METHOD + "begin");
         //if (!roomService.existsById(roomId)) {
         //    return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
         //}
-        roomService.updateRoom(body);
-        return new ResponseEntity<Void>(HttpStatus.OK);
-    }
 
+        try {
+            roomService.updateRoom(body);
+            return new ResponseEntity<Void>(HttpStatus.OK);
+
+            
+        } catch (ApiException e) {
+        	return new ResponseEntity<Void>(HttpStatus.valueOf(e.getCode()));
+        } catch (Exception e) {
+        	log.error(METHOD, e);
+        	return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    
+    
+    
+    
+    
+    
+    
     public ResponseEntity<ModelApiResponse> uploadFile(@ApiParam(value = "ID of room to update",required=true) @PathVariable("roomId") Long roomId,@ApiParam(value = "Additional data to pass to server") @RequestParam(value="additionalMetadata", required=false)  String additionalMetadata,@ApiParam(value = "file detail") @Valid @RequestPart("file") MultipartFile file) {
         String accept = request.getHeader("Accept");
         if (accept != null && accept.contains("application/json")) {
