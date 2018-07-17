@@ -50,9 +50,10 @@ public class HotelApiController implements HotelApi {
     }
 
     public ResponseEntity<Hotel> addHotel(@ApiParam(value = "Hotel object that needs to be added" ,required=true )  @Valid @RequestBody Hotel body) {
-        String accept = request.getHeader("Accept");
         final String METHOD = "add():";
+        log.info(METHOD + body);
         Hotel hotel = hotelService.addHotel(body);
+        log.info(METHOD + "return:" + hotel);
         return new ResponseEntity<Hotel>(hotel, HttpStatus.OK);
     }
 
