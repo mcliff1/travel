@@ -110,14 +110,16 @@ public class HotelApiController implements HotelApi {
      */
     public ResponseEntity<Void> updateHotel(@ApiParam(value = "Hotel object that needs to be updated" ,required=true )  @Valid @RequestBody Hotel body) {
         final String METHOD = "updateHotel():";
-        String accept = request.getHeader("Accept");
+        log.info(METHOD + "begin");
 
         try {
             hotelService.updateHotel(body);
             return new ResponseEntity<Void>(HttpStatus.OK);
+        } catch (ApiException e) {
+        	return new ResponseEntity<Void>(HttpStatus.valueOf(e.getCode()));
         } catch (Exception e) {
-            log.error(METHOD, e);
-            return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
+        	log.error(METHOD, e);
+        	return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
