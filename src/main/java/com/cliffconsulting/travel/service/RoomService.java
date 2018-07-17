@@ -17,11 +17,19 @@ public class RoomService {
     RoomRepository repo;
 
     public boolean existsById(long roomId) {
-        return repo.exists(roomId);
+        return repo.existsById(roomId);
     }
 
     public Room getRoomById(long roomId) {
-        com.cliffconsulting.travel.entity.Room roomDO = repo.findOne(roomId);
+        com.cliffconsulting.travel.entity.Room roomDO = 
+            repo.findById(roomId).orElse(null);
+
+        // repo.findById(roomId).orElseThrow(() -> new NotFoundEntity(roomId));
+        // Optional<Foo> fooOpt = repo.findById(id);
+        // if (fooOpt.isPresent()) {
+        //    Foo foo = fooOpt.get();
+        //    ...
+        // } else { throw not FoundException() }
         Room room = new Room();
         BeanUtils.copyProperties(roomDO, room);
         return room;
@@ -43,7 +51,7 @@ public class RoomService {
     }
 
     public void deleteRoom(long roomId) {
-        repo.delete(roomId);
+        repo.deleteById(roomId);
     }
 
 

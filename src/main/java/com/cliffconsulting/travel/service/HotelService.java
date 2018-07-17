@@ -19,11 +19,11 @@ public class HotelService {
     private static final Logger log = LoggerFactory.getLogger(HotelService.class);
 
     public boolean exists(long hotelId) {
-        return repo.exists(hotelId);
+        return repo.existsById(hotelId);
     }
 
     public Hotel getHotelById(long hotelId) {
-        com.cliffconsulting.travel.entity.Hotel hotelDO = repo.findOne(hotelId);
+        com.cliffconsulting.travel.entity.Hotel hotelDO = repo.findById(hotelId).orElse(null);
         Hotel hotel = new Hotel();
         BeanUtils.copyProperties(hotelDO, hotel);
         return hotel;
@@ -31,16 +31,10 @@ public class HotelService {
 
     public Hotel addHotel(Hotel hotel) {
         final String METHOD = "addHotel():";
-        log.info(METHOD + "1:" + hotel);
         com.cliffconsulting.travel.entity.Hotel hotelDO = new com.cliffconsulting.travel.entity.Hotel();
         BeanUtils.copyProperties(hotel, hotelDO);
-        log.info(METHOD + "2:" + hotelDO);
         hotelDO = repo.save(hotelDO);
-        log.info(METHOD + "3:" + hotelDO);
         BeanUtils.copyProperties(hotelDO, hotel);
-        log.info(METHOD + "4:" + hotel);
-        hotel = getHotelById(hotelDO.getHotelId());
-        log.info(METHOD + "5:" + hotel);
         return hotel;
     }
 
@@ -52,8 +46,8 @@ public class HotelService {
     }
 
     public boolean deleteHotel(long hotelId) {
-        if (!exists(hotelId)) return false;
-        repo.delete(hotelId);
+        if (!repo.existsById(hotelId)) return false;
+        repo.deleteById(hotelId);
         return true;
     }
 

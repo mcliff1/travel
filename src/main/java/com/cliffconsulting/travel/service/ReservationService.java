@@ -14,11 +14,11 @@ public class ReservationService {
     ReservationRepository repo;
 
     public boolean exists(long reservationId) {
-        return repo.exists(reservationId);
+        return repo.existsById(reservationId);
     }
 
     public Reservation getReservationById(long reservationId) {
-        com.cliffconsulting.travel.entity.Reservation reservationDO = repo.findOne(reservationId);
+        com.cliffconsulting.travel.entity.Reservation reservationDO = repo.findById(reservationId).orElse(null);
         Reservation reservation = new Reservation();
         BeanUtils.copyProperties(reservationDO, reservation);
         return reservation;
@@ -40,7 +40,7 @@ public class ReservationService {
     }
 
     public void deleteReservation(long reservationId) {
-        repo.delete(reservationId);
+        repo.deleteById(reservationId);
     }
 
 }
