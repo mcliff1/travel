@@ -33,7 +33,7 @@ public class ReservationGuest implements Serializable {
         return guestId;
     }
 
-    public void setGuestId(Long reservationId) {
+    public void setGuestId(Long guestId) {
         this.guestId = guestId;
     }
 

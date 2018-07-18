@@ -1,14 +1,20 @@
 package com.cliffconsulting.travel.service;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Service;
 
 import com.cliffconsulting.travel.api.ApiException;
+import com.cliffconsulting.travel.entity.AvailableRoom;
+import com.cliffconsulting.travel.entity.HotelRepository;
 import com.cliffconsulting.travel.entity.RoomPhoto;
 import com.cliffconsulting.travel.entity.RoomPhotoRepository;
 import com.cliffconsulting.travel.entity.RoomRepository;
@@ -21,8 +27,14 @@ public class RoomService {
     @Autowired 
     RoomRepository repo;
 
+    @Autowired
+    JdbcTemplate jdbcTemplate;
+    
     @Autowired 
     RoomPhotoRepository photoRepo;
+
+    @Autowired 
+    HotelRepository hotelRepo;
 
     private static final Logger log = LoggerFactory.getLogger(RoomService.class);
 
@@ -99,6 +111,16 @@ public class RoomService {
     }
 
     
+    class AvailableRoomMapper implements RowMapper<AvailableRoom> {
+    	@Override
+    	public AvailableRoom mapRow(ResultSet rs, int rowNum) throws SQLException {
+    		AvailableRoom aRoom = new AvailableRoom();
+    		aRoom.setRoomId(rs.getLong("room_id"));
+    		aRoom.setMaxGuests(rs.getInt("max_guests"));
+    		return aRoom;
+    		
+    	}
+    }
 
     /**
      * Key business logic for the system
@@ -108,10 +130,27 @@ public class RoomService {
     public List<Room> findRoom(RoomQuery query) {
         final String METHOD = "findRoom():";
         log.debug(METHOD + query);
-
-        List<Room> list = new ArrayList<Room>();
-
-        return list;
+        
+        List<AvailableRoom> list = null; 
+        
+        if (query.getHotelName() != null) {
+        	com.cliffconsulting.travel.entity.Hotel hotel = hotelRepo.findByName(query.getHotelName());
+        	if (hotel != null) {
+        		final String SQL = "select r.room_id as roomId, r.max_guests as maxGuests from room r left join (select * from reservation res where end_dt > ? and start_dt < ? ) res on r.room_id = res.room_id where end_dt is null and start_dt is null and hotel_id = ?";
+            
+        		list = 
+        			jdbcTemplate.query(SQL, new Object[] {query.getStartDate(), query.getEndDate(), hotel.getHotelId() }, new AvailableRoomMapper());
+        	}    	
+        } else {
+        	final String SQL = "select r.room_id as roomId, r.max_guests as maxGuests from room r left join (select * from reservation res where end_dt > ? and start_dt < ? ) res on r.room_id = res.room_id where end_dt is null and start_dt is null";
+        
+        	list = 
+        		jdbcTemplate.query(SQL, new Object[] {query.getStartDate(), query.getEndDate() }, new AvailableRoomMapper());
+        }
+        
+        log.debug(METHOD + "available rooms before guest filter:" + list);
+        
+        return new ArrayList<Room>();
     }
-
+    
 }
