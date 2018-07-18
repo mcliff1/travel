@@ -13,7 +13,7 @@ import javax.persistence.Table;
 @Entity
 public class Reservation implements Serializable { 
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1567475L;
 
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)

@@ -30,7 +30,9 @@ public class ReservationService {
         com.cliffconsulting.travel.entity.Reservation reservationDO = repo.findById(reservationId).orElse(null);
         Reservation reservation = new Reservation();
         BeanUtils.copyProperties(reservationDO, reservation);
-        
+        reservation.setRoomId(Long.toString(reservationDO.getRoomId()));
+        reservation.setStartDate(getLocalDate(reservationDO.getStartDate()));
+        reservation.setEndDate(getLocalDate(reservationDO.getEndDate()));
         List<ReservationGuests> guestList = new ArrayList<ReservationGuests>();
         List<com.cliffconsulting.travel.entity.ReservationGuest> guestsDO = guestRepo.findGuestsByReservationId(reservationId);
         guestsDO.stream()
@@ -52,6 +54,11 @@ public class ReservationService {
     	
         com.cliffconsulting.travel.entity.Reservation reservationDO = new com.cliffconsulting.travel.entity.Reservation();
         BeanUtils.copyProperties(reservation, reservationDO);
+
+        reservationDO.setRoomId(Long.valueOf(reservation.getRoomId()));
+        reservationDO.setStartDate(getSQLDate(reservation.getStartDate()));
+        reservationDO.setEndDate(getSQLDate(reservation.getEndDate()));
+
         reservationDO = repo.save(reservationDO);
         BeanUtils.copyProperties(reservationDO, reservation);
 
@@ -75,6 +82,10 @@ public class ReservationService {
     public void updateReservation(Reservation reservation) {
         com.cliffconsulting.travel.entity.Reservation reservationDO = new com.cliffconsulting.travel.entity.Reservation();
         BeanUtils.copyProperties(reservation, reservationDO);
+        reservationDO.setRoomId(Long.valueOf(reservation.getRoomId()));
+        reservationDO.setStartDate(getSQLDate(reservation.getStartDate()));
+        reservationDO.setEndDate(getSQLDate(reservation.getEndDate()));
+
         repo.save(reservationDO);
         
         reservation.getGuests().stream()
@@ -87,8 +98,19 @@ public class ReservationService {
 
     public void deleteReservation(long reservationId) {
         repo.deleteById(reservationId);
+        guestRepo.deleteByReservationId(reservationId);
         
-        
+    }
+
+    
+    public java.util.Date getSQLDate(org.threeten.bp.LocalDate date) {
+    	final long MILLIS_IN_DAY = 1000 * 60 * 60 * 24;
+    	return new java.util.Date(MILLIS_IN_DAY * date.toEpochDay());
+    }
+    
+    public org.threeten.bp.LocalDate getLocalDate(java.util.Date date) {
+    	final long MILLIS_IN_DAY = 1000 * 60 * 60 * 24;
+    	return org.threeten.bp.LocalDate.ofEpochDay(date.getTime() / MILLIS_IN_DAY);
     }
 
 }
