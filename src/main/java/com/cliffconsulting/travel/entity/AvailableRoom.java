@@ -18,4 +18,10 @@ public class AvailableRoom {
 		this.maxGuests = maxGuests;
 	}
 	
+	@Override
+    public String toString() {
+        return String.format("AvailableRoom[roomId=%s, maxGuests=%s]",
+            roomId, maxGuests);
+    }
+
 }

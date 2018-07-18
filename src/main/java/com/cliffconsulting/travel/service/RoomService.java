@@ -4,6 +4,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -148,8 +150,14 @@ public class RoomService {
         list = availRepo.findByDatesAndHotel(startDate, endDate, hotelId);
         
         log.debug(METHOD + "available rooms before guest filter:" + list);
+        //Stream<AvailableRoom> roomMatchs = 
+        List<Room> roomList = new ArrayList<Room>();
         
-        return new ArrayList<Room>();
+        list.stream()
+        	.filter(r -> r.getMaxGuests() <= query.getGuests())
+        	.forEach(r -> roomList.add(getRoomById(r.getRoomId())));
+        
+        return roomList;
     }
     
 }
