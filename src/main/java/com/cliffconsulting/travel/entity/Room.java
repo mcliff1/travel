@@ -1,18 +1,19 @@
 package com.cliffconsulting.travel.entity;
 
 import java.io.Serializable;
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Table;
 
 //@Table(name="hotel")
 @Entity
 public class Room implements Serializable { 
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 14653464122345L;
 
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
@@ -27,6 +28,11 @@ public class Room implements Serializable {
     @Column(name="max_guests")    
     private int maxGuests;
 
+    private Date startAvailDate;
+
+    private Date endAvailDate;
+
+    
     public Room() {
     }
 
@@ -64,8 +70,24 @@ public class Room implements Serializable {
 
     @Override
     public String toString() {
-        return String.format("Room[roomId=%s, hotelId=%s, description=%s, maxGuests=%s]",
-            roomId, hotelId, description, maxGuests);
+        return String.format("Room[roomId=%s, hotelId=%s, description=%s, maxGuests=%s, startAvailDate=%, endAvailDate=%]",
+            roomId, hotelId, description, maxGuests, startAvailDate, endAvailDate);
     }
+
+	public Date getStartAvailDate() {
+		return startAvailDate;
+	}
+
+	public void setStartAvailDate(Date startAvailDate) {
+		this.startAvailDate = startAvailDate;
+	}
+
+	public Date getEndAvailDate() {
+		return endAvailDate;
+	}
+
+	public void setEndAvailDate(Date endAvailDate) {
+		this.endAvailDate = endAvailDate;
+	}
 }  
 

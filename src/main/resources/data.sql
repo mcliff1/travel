@@ -1,11 +1,11 @@
 insert into hotel (hotel_id, hotel_nm, hotel_address, city, phone, stars) values (1, 'The Landmark', '123 South Main', 'Denver', '(303) 555-STAY', 4)
 insert into hotel (hotel_id, hotel_nm, hotel_address, city, phone, stars) values (2, 'Sussex', '4 Downtown Way', 'Megapolis', '(123) 555-HOME', 3)
 
-insert into room (room_id, hotel_id, description, max_guests ) values (1, 1, '2 King Bed', 4)
-insert into room (room_id, hotel_id, description, max_guests ) values (2, 1, '2 King Bed', 4)
-insert into room (room_id, hotel_id, description, max_guests ) values (3, 1, '1 King Bed', 2)
-insert into room (room_id, hotel_id, description, max_guests ) values (4, 1, '1 King Bed', 2)
-insert into room (room_id, hotel_id, description, max_guests ) values (5, 1, '2 King Bed, 2 Twin', 6)
+insert into room (room_id, hotel_id, description, max_guests, start_avail_date, end_avail_date ) values (1, 1, '2 King Bed', 4, '2018-01-01', '2019-12-31')
+insert into room (room_id, hotel_id, description, max_guests, start_avail_date, end_avail_date ) values (2, 2, '2 King Bed', 4, '2018-01-01', '2019-12-31')
+insert into room (room_id, hotel_id, description, max_guests, start_avail_date, end_avail_date ) values (3, 1, '1 King Bed', 2, '2018-01-01', '2019-12-31')
+insert into room (room_id, hotel_id, description, max_guests, start_avail_date, end_avail_date ) values (4, 2, '1 King Bed', 2, '2018-08-15', '2019-12-31')
+insert into room (room_id, hotel_id, description, max_guests, start_avail_date, end_avail_date ) values (5, 1, '2 King Bed, 2 Twin', 6, '2018-01-01', '2018-08-20')
 
 insert into room_photo (photo_id, room_id, url) values (1, 1, 'http://tiny.ul/1a43124') 
 insert into room_photo (photo_id, room_id, url) values (2, 1, 'http://tiny.ul/1b43124') 

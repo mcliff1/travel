@@ -14,11 +14,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.constraints.*;
 import javax.validation.Valid;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
@@ -38,32 +34,27 @@ public class ReservationApiController implements ReservationApi {
 
     private final HttpServletRequest request;
 
-    @org.springframework.beans.factory.annotation.Autowired
+    @Autowired
     public ReservationApiController(ObjectMapper objectMapper, HttpServletRequest request) {
         this.objectMapper = objectMapper;
         this.request = request;
     }
 
     public ResponseEntity<Reservation> bookRoom(@ApiParam(value = "ID of hotel to return",required=true) @PathVariable("hotelId") Long hotelId,@ApiParam(value = "object that needs to be added" ,required=true )  @Valid @RequestBody Reservation body) {
-        String accept = request.getHeader("Accept");
-        if (accept != null && accept.contains("application/json")) {
-            try {
-                return new ResponseEntity<Reservation>(objectMapper.readValue("{  \"reservationId\" : 0,  \"endDate\" : \"2000-01-23\",  \"guests\" : [ {    \"name\" : \"name\",    \"age\" : 6  }, {    \"name\" : \"name\",    \"age\" : 6  } ],  \"roomId\" : \"roomId\",  \"startDate\" : \"2000-01-23\"}", Reservation.class), HttpStatus.NOT_IMPLEMENTED);
-            } catch (IOException e) {
-                log.error("Couldn't serialize response for content type application/json", e);
-                return new ResponseEntity<Reservation>(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-        }
-
-        return new ResponseEntity<Reservation>(HttpStatus.NOT_IMPLEMENTED);
+    	final String METHOD = "bookRoom():";
+    	log.debug(METHOD + "begin");
+        Reservation bookedReservation = reservationService.addReservation(body);
+        
+        
+        return new ResponseEntity<Reservation>(bookedReservation, HttpStatus.OK);
+        
     }
 
 
 
     public ResponseEntity<Void> deleteReservation(@ApiParam(value = "reservation id to delete",required=true) @PathVariable("reservationId") Long reservationId,@ApiParam(value = "" ) @RequestHeader(value="api_key", required=false) String apiKey) {
-        String accept = request.getHeader("Accept");
         if (!reservationService.exists(reservationId)) {
-            return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
+            return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
         }
         reservationService.deleteReservation(reservationId);
         return new ResponseEntity<Void>(HttpStatus.OK);

@@ -166,7 +166,7 @@ public class RoomService {
         List<Room> roomList = new ArrayList<Room>();
         
         list.stream()
-        	.filter(r -> r.getMaxGuests() <= query.getGuests())
+        	.filter(r -> r.getMaxGuests() >= query.getGuests())
         	.forEach(r -> roomList.add(getRoomById(r.getRoomId())));
         log.debug(METHOD + "return:" + roomList);
         return roomList;

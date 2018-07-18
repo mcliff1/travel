@@ -60,6 +60,18 @@ Any additional comments.
 
 This uses springboot 2.0.3 to build a stand-alone java application jar file to be executed with jdk8. 
 
+The code has 4 high level packages
+* api
+* entity
+* model
+* service
+
+The swagger code-gen created the *api* and *model* layers, these are for REST.  
+Adding jpa to pom.xml we can write the interfaces for the *entity* layer.
+Ideally the *service* layer should split out a *domain* package and provide better isolation between the persistence and the API layers. 
+
+The runtime solution can be deployed in Docker.
+
 ## Build and Deploy
 
 The `build.sh` script will launch a Docker image to run maven to build and run the unit tests. The `run.sh` shell script has been provided to launch a docker image with java8 and bind to local port 80 to serve the API.
