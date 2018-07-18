@@ -22,10 +22,16 @@ insert into room_photo (photo_id, room_id, url) values (12, 5, 'http://tiny.ul/5
 
 insert into reservation (reservation_id, room_id, start_dt, end_dt, num_guests) values ( 1, 1, '2018-08-02', '2018-08-04', 3)
 insert into reservation (reservation_id, room_id, start_dt, end_dt, num_guests) values ( 2, 1, '2018-08-09', '2018-08-11', 2)
+insert into reservation (reservation_id, room_id, start_dt, end_dt, num_guests) values ( 3, 2, '2018-08-03', '2018-08-05', 1)
+insert into reservation (reservation_id, room_id, start_dt, end_dt, num_guests) values ( 4, 2, '2018-08-07', '2018-08-10', 1)
+insert into reservation (reservation_id, room_id, start_dt, end_dt, num_guests) values ( 5, 3, '2018-08-11', '2018-08-13', 1)
 
 insert into reservation_guest (guest_id, reservation_id, name, age) values ( 1, 1, 'Matt', 40)
 insert into reservation_guest (guest_id, reservation_id, name, age) values ( 2, 1, 'Tonia', 41)
 insert into reservation_guest (guest_id, reservation_id, name, age) values ( 3, 1, 'Ilse', 2)
 insert into reservation_guest (guest_id, reservation_id, name, age) values ( 4, 2, 'Paul', 65)
 insert into reservation_guest (guest_id, reservation_id, name, age) values ( 5, 2, 'Simon', 54)
+insert into reservation_guest (guest_id, reservation_id, name, age) values ( 6, 3, 'Andy', 32)
+insert into reservation_guest (guest_id, reservation_id, name, age) values ( 7, 3, 'Andy', 32)
+insert into reservation_guest (guest_id, reservation_id, name, age) values ( 8, 3, 'Andy', 32)
 
