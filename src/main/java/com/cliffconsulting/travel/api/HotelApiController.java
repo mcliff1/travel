@@ -65,6 +65,7 @@ public class HotelApiController implements HotelApi {
         return new ResponseEntity<Void>(HttpStatus.OK);
     }
 
+    /*
     public ResponseEntity<List<Room>> getAvailableRooms(@ApiParam(value = "ID of hotel to return",required=true) @PathVariable("hotelId") Long hotelId) {
         String accept = request.getHeader("Accept");
         if (accept != null && accept.contains("application/json")) {
@@ -80,7 +81,7 @@ public class HotelApiController implements HotelApi {
 
         return new ResponseEntity<List<Room>>(HttpStatus.NOT_IMPLEMENTED);
     }
-
+     */
 
 
     /** 
