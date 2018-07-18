@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import com.cliffconsulting.travel.api.ApiException;
 import com.cliffconsulting.travel.entity.AvailableRoom;
+import com.cliffconsulting.travel.entity.AvailableRoomRepository;
 import com.cliffconsulting.travel.entity.HotelRepository;
 import com.cliffconsulting.travel.entity.RoomPhoto;
 import com.cliffconsulting.travel.entity.RoomPhotoRepository;
@@ -28,7 +29,7 @@ public class RoomService {
     RoomRepository repo;
 
     @Autowired
-    JdbcTemplate jdbcTemplate;
+    AvailableRoomRepository availRepo;
     
     @Autowired 
     RoomPhotoRepository photoRepo;
@@ -131,22 +132,20 @@ public class RoomService {
         final String METHOD = "findRoom():";
         log.debug(METHOD + query);
         
-        List<AvailableRoom> list = null; 
-        
+        List<AvailableRoom> list = null;
+        Long hotelId = null;
         if (query.getHotelName() != null) {
         	com.cliffconsulting.travel.entity.Hotel hotel = hotelRepo.findByName(query.getHotelName());
         	if (hotel != null) {
-        		final String SQL = "select r.room_id as roomId, r.max_guests as maxGuests from room r left join (select * from reservation res where end_dt > ? and start_dt < ? ) res on r.room_id = res.room_id where end_dt is null and start_dt is null and hotel_id = ?";
-            
-        		list = 
-        			jdbcTemplate.query(SQL, new Object[] {query.getStartDate(), query.getEndDate(), hotel.getHotelId() }, new AvailableRoomMapper());
-        	}    	
-        } else {
-        	final String SQL = "select r.room_id as roomId, r.max_guests as maxGuests from room r left join (select * from reservation res where end_dt > ? and start_dt < ? ) res on r.room_id = res.room_id where end_dt is null and start_dt is null";
-        
-        	list = 
-        		jdbcTemplate.query(SQL, new Object[] {query.getStartDate(), query.getEndDate() }, new AvailableRoomMapper());
+        		hotelId = hotel.getHotelId();
+        	}
         }
+        final long MILLIS_IN_DAY = 1000 * 60 * 60 * 24;
+        java.sql.Date startDate = new java.sql.Date(MILLIS_IN_DAY * query.getStartDate().toEpochDay());
+        java.sql.Date endDate = new java.sql.Date(MILLIS_IN_DAY * query.getEndDate().toEpochDay());
+        
+        		
+        list = availRepo.findByDatesAndHotel(startDate, endDate, hotelId);
         
         log.debug(METHOD + "available rooms before guest filter:" + list);
         
