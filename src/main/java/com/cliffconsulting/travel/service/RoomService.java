@@ -58,6 +58,18 @@ public class RoomService {
         // } else { throw not FoundException() }
         Room room = new Room();
         BeanUtils.copyProperties(roomDO, room);
+        
+        
+        //  need to pull in the images
+        List<RoomPhoto> photoList = photoRepo.findByRoomId(roomId);
+        List<String> urlList = new ArrayList<String>();
+        if (photoList != null) {
+        
+            photoList.stream()
+        		.forEach(photo -> urlList.add(photo.getUrl()));
+        }
+        room.setPhotoUrls(urlList);;
+        
         return room;
     }
 
@@ -156,7 +168,7 @@ public class RoomService {
         list.stream()
         	.filter(r -> r.getMaxGuests() <= query.getGuests())
         	.forEach(r -> roomList.add(getRoomById(r.getRoomId())));
-        
+        log.debug(METHOD + "return:" + roomList);
         return roomList;
     }
     

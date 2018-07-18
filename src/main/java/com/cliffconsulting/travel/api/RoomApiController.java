@@ -59,8 +59,9 @@ public class RoomApiController implements RoomApi {
     }
 
     public ResponseEntity<List<Room>> findRoom(@ApiParam(value = "Room object that needs to be added" ,required=true )  @Valid @RequestBody RoomQuery body) {
+    	final String METHOD = "findRoom():";
         List<Room> roomList = roomService.findRoom(body);
-
+        log.debug(METHOD + "return:" + roomList);;
         return new ResponseEntity<List<Room>>(roomList, HttpStatus.OK);
     }
 
