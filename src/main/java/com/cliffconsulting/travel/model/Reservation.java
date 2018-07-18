@@ -24,7 +24,7 @@ public class Reservation   {
   private Long reservationId = null;
 
   @JsonProperty("roomId")
-  private String roomId = null;
+  private Long roomId = null;
 
   @JsonProperty("startDate")
   private LocalDate startDate = null;
@@ -56,7 +56,7 @@ public class Reservation   {
     this.reservationId = reservationId;
   }
 
-  public Reservation roomId(String roomId) {
+  public Reservation roomId(Long roomId) {
     this.roomId = roomId;
     return this;
   }
@@ -69,11 +69,11 @@ public class Reservation   {
   @NotNull
 
 
-  public String getRoomId() {
+  public Long getRoomId() {
     return roomId;
   }
 
-  public void setRoomId(String roomId) {
+  public void setRoomId(Long roomId) {
     this.roomId = roomId;
   }
 

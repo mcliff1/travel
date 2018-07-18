@@ -19,7 +19,6 @@ tags:
     description: Operations about booking
 schemes:
   - http
-  - https
 paths:
   /hotel:
     post:
@@ -468,7 +467,8 @@ definitions:
         type: integer
         format: int64
       roomId:
-        type: string
+        type: integer
+        format: int64
       startDate:
         type: string
         format: date

@@ -30,7 +30,6 @@ public class ReservationService {
         com.cliffconsulting.travel.entity.Reservation reservationDO = repo.findById(reservationId).orElse(null);
         Reservation reservation = new Reservation();
         BeanUtils.copyProperties(reservationDO, reservation);
-        reservation.setRoomId(Long.toString(reservationDO.getRoomId()));
         reservation.setStartDate(getLocalDate(reservationDO.getStartDate()));
         reservation.setEndDate(getLocalDate(reservationDO.getEndDate()));
         List<ReservationGuests> guestList = new ArrayList<ReservationGuests>();
@@ -55,7 +54,6 @@ public class ReservationService {
         com.cliffconsulting.travel.entity.Reservation reservationDO = new com.cliffconsulting.travel.entity.Reservation();
         BeanUtils.copyProperties(reservation, reservationDO);
 
-        reservationDO.setRoomId(Long.valueOf(reservation.getRoomId()));
         reservationDO.setStartDate(getSQLDate(reservation.getStartDate()));
         reservationDO.setEndDate(getSQLDate(reservation.getEndDate()));
 
@@ -82,7 +80,6 @@ public class ReservationService {
     public void updateReservation(Reservation reservation) {
         com.cliffconsulting.travel.entity.Reservation reservationDO = new com.cliffconsulting.travel.entity.Reservation();
         BeanUtils.copyProperties(reservation, reservationDO);
-        reservationDO.setRoomId(Long.valueOf(reservation.getRoomId()));
         reservationDO.setStartDate(getSQLDate(reservation.getStartDate()));
         reservationDO.setEndDate(getSQLDate(reservation.getEndDate()));
 
