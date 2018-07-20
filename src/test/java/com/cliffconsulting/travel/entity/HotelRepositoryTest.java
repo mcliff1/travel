@@ -22,7 +22,7 @@ import com.cliffconsulting.travel.entity.bean.Hotel;
 @DataJpaTest
 @ContextConfiguration(classes = {HotelRepository.class})
 @ComponentScan
-@EntityScan(basePackages={"com.cliffconsulting.travel.entity"})
+@EntityScan(basePackages={"com.cliffconsulting.travel.entity", "com.cliffconsulting.travel.entity.bean"})
 @EnableJpaRepositories(basePackages={"com.cliffconsulting.travel.entity"})
 public class HotelRepositoryTest {
 	

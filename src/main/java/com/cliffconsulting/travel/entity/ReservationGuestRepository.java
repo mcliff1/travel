@@ -13,11 +13,11 @@ import com.cliffconsulting.travel.entity.bean.ReservationGuestBean;
 @Repository
 public interface ReservationGuestRepository extends JpaRepository<ReservationGuestBean, Long>{
 
-	@Query("select g from ReservationGuest g where reservation_id = :reservation_id")
+	@Query(value = "select g from ReservationGuest g where reservation_id = :reservation_id", nativeQuery = true)
     List<ReservationGuestBean> findGuestsByReservationId(@Param("reservation_id") Long reservationId);
 
 	@Transactional
-	@Query("delete from ReservationGuest where reservation_id = :reservation_id")
+	@Query(value = "delete from ReservationGuest where reservation_id = :reservation_id", nativeQuery = true)
 	void deleteByReservationId(@Param("reservation_id") Long reservationId);
 	
 }

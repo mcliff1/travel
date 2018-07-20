@@ -12,10 +12,12 @@ import com.cliffconsulting.travel.entity.bean.RoomPhotoBean;
 @Repository
 public interface RoomPhotoRepository extends JpaRepository<RoomPhotoBean, Long>{
 
-	@Query("select p from RoomPhoto p where room_id = :room_id and url = :url")
+	// TODO - why are none of these validating!
+	
+	@Query(value = "select p from RoomPhoto p where room_id = :room_id and url = :url", nativeQuery = true)
     RoomPhotoBean findUrlByRoomId(@Param("room_id") Long roomId, @Param("url") String url);
 
-	@Query("select p from RoomPhoto p where room_id = :room_id")
+	@Query(value = "select p from RoomPhoto p where room_id = :room_id", nativeQuery = true)
     List<RoomPhotoBean> findByRoomId(@Param("room_id") Long roomId);
 
 	
