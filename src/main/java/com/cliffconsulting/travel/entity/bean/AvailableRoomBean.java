@@ -1,6 +1,6 @@
-package com.cliffconsulting.travel.entity;
+package com.cliffconsulting.travel.entity.bean;
 
-public class AvailableRoom {
+public class AvailableRoomBean {
 
 	private Long roomId;
 	private int maxGuests;

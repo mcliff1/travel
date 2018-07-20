@@ -21,14 +21,12 @@ public class HotelService {
     @Autowired 
     HotelRepository repo;
 
-    //private static final Logger log = LoggerFactory.getLogger(HotelService.class);
-
     public boolean exists(long hotelId) {
         return repo.existsById(hotelId);
     }
 
     public Hotel getHotelById(long hotelId) {
-        com.cliffconsulting.travel.entity.Hotel hotelDO = repo.findById(hotelId).orElse(null);
+        com.cliffconsulting.travel.entity.bean.Hotel hotelDO = repo.findById(hotelId).orElse(null);
         Hotel hotel = new Hotel();
         BeanUtils.copyProperties(hotelDO, hotel);
         return hotel;
@@ -37,7 +35,7 @@ public class HotelService {
     public Hotel addHotel(Hotel hotel) {
         final String METHOD = "addHotel():";
         log.debug(METHOD + hotel);
-        com.cliffconsulting.travel.entity.Hotel hotelDO = new com.cliffconsulting.travel.entity.Hotel();
+        com.cliffconsulting.travel.entity.bean.Hotel hotelDO = new com.cliffconsulting.travel.entity.bean.Hotel();
         BeanUtils.copyProperties(hotel, hotelDO);
         hotelDO = repo.save(hotelDO);
         BeanUtils.copyProperties(hotelDO, hotel);
@@ -53,7 +51,7 @@ public class HotelService {
     		log.info("calling repo on:" + hotel.getHotelId());
     		if (!repo.existsById(hotel.getHotelId())) { throw new ApiException(404, "hotel not found"); }
     		
-    		com.cliffconsulting.travel.entity.Hotel hotelDO = new com.cliffconsulting.travel.entity.Hotel();
+    		com.cliffconsulting.travel.entity.bean.Hotel hotelDO = new com.cliffconsulting.travel.entity.bean.Hotel();
     		BeanUtils.copyProperties(hotel, hotelDO);
     		repo.save(hotelDO);
     	} catch (Exception e) {

@@ -1,4 +1,4 @@
-package com.cliffconsulting.travel.entity;
+package com.cliffconsulting.travel.entity.bean;
 
 import java.io.Serializable;
 import javax.persistence.Column;
@@ -6,9 +6,11 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
-public class ReservationGuest implements Serializable { 
+@Table(name="reservation_guest")
+public class ReservationGuestBean implements Serializable { 
 
     private static final long serialVersionUID = 1L;
 
@@ -24,7 +26,7 @@ public class ReservationGuest implements Serializable {
 
     private int age;
 
-    public ReservationGuest() {
+    public ReservationGuestBean() {
     }
 
     public Long getGuestId() {

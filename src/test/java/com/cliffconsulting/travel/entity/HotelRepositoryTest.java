@@ -13,6 +13,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import com.cliffconsulting.travel.entity.bean.Hotel;
+
 
 
 
@@ -20,7 +22,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 @DataJpaTest
 @ContextConfiguration(classes = {HotelRepository.class})
 @ComponentScan
-@EntityScan(basePackages={"com.cliffconsulting.travel.entity"})
+@EntityScan(basePackages={"com.cliffconsulting.travel.entity", "com.cliffconsulting.travel.entity.bean"})
 @EnableJpaRepositories(basePackages={"com.cliffconsulting.travel.entity"})
 public class HotelRepositoryTest {
 	

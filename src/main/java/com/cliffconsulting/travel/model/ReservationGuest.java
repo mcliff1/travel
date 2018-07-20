@@ -11,14 +11,14 @@ import org.springframework.validation.annotation.Validated;
 @Validated
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-07-15T21:16:59.955Z")
 
-public class ReservationGuests   {
+public class ReservationGuest   {
   @JsonProperty("name")
   private String name = null;
 
   @JsonProperty("age")
   private Integer age = null;
 
-  public ReservationGuests name(String name) {
+  public ReservationGuest name(String name) {
     this.name = name;
     return this;
   }
@@ -38,7 +38,7 @@ public class ReservationGuests   {
     this.name = name;
   }
 
-  public ReservationGuests age(Integer age) {
+  public ReservationGuest age(Integer age) {
     this.age = age;
     return this;
   }
@@ -67,7 +67,7 @@ public class ReservationGuests   {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    ReservationGuests reservationGuests = (ReservationGuests) o;
+    ReservationGuest reservationGuests = (ReservationGuest) o;
     return Objects.equals(this.name, reservationGuests.name) &&
         Objects.equals(this.age, reservationGuests.age);
   }

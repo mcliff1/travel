@@ -13,12 +13,14 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Service;
 
 import com.cliffconsulting.travel.api.ApiException;
-import com.cliffconsulting.travel.entity.AvailableRoom;
 import com.cliffconsulting.travel.entity.AvailableRoomRepository;
 import com.cliffconsulting.travel.entity.HotelRepository;
-import com.cliffconsulting.travel.entity.RoomPhoto;
 import com.cliffconsulting.travel.entity.RoomPhotoRepository;
 import com.cliffconsulting.travel.entity.RoomRepository;
+import com.cliffconsulting.travel.entity.bean.AvailableRoomBean;
+import com.cliffconsulting.travel.entity.bean.Hotel;
+import com.cliffconsulting.travel.entity.bean.RoomBean;
+import com.cliffconsulting.travel.entity.bean.RoomPhotoBean;
 import com.cliffconsulting.travel.model.Room;
 import com.cliffconsulting.travel.model.RoomQuery;
 
@@ -45,7 +47,7 @@ public class RoomService {
     }
 
     public Room getRoomById(long roomId) {
-        com.cliffconsulting.travel.entity.Room roomDO = 
+        RoomBean roomDO = 
             repo.findById(roomId).orElse(null);
 
         // repo.findById(roomId).orElseThrow(() -> new NotFoundEntity(roomId));
@@ -59,7 +61,7 @@ public class RoomService {
         
         
         //  need to pull in the images
-        List<RoomPhoto> photoList = photoRepo.findByRoomId(roomId);
+        List<RoomPhotoBean> photoList = photoRepo.findByRoomId(roomId);
         List<String> urlList = new ArrayList<String>();
         if (photoList != null) {
         
@@ -72,7 +74,7 @@ public class RoomService {
     }
 
     public Room addRoom(Room room) {
-        com.cliffconsulting.travel.entity.Room roomDO = new com.cliffconsulting.travel.entity.Room();
+        RoomBean roomDO = new RoomBean();
         BeanUtils.copyProperties(room, roomDO);
         roomDO = repo.save(roomDO);
         BeanUtils.copyProperties(roomDO, room);
@@ -89,7 +91,7 @@ public class RoomService {
     		if (!repo.existsById(room.getRoomId())) { throw new ApiException(404, "room not found"); }
     		
     		// make the update
-    		com.cliffconsulting.travel.entity.Room roomDO = new com.cliffconsulting.travel.entity.Room();
+    		RoomBean roomDO = new RoomBean();
             BeanUtils.copyProperties(room, roomDO);
             repo.save(roomDO);
 
@@ -112,8 +114,8 @@ public class RoomService {
      */
     public void uploadPhoto(long roomId, String url) {
     	
-    	RoomPhoto existing = photoRepo.findUrlByRoomId(roomId, url);
-    	RoomPhoto photo = new RoomPhoto();
+    	RoomPhotoBean existing = photoRepo.findUrlByRoomId(roomId, url);
+    	RoomPhotoBean photo = new RoomPhotoBean();
     	photo.setRoomId(roomId);
     	photo.setUrl(url);
     	
@@ -124,10 +126,10 @@ public class RoomService {
     }
 
     
-    class AvailableRoomMapper implements RowMapper<AvailableRoom> {
+    class AvailableRoomMapper implements RowMapper<AvailableRoomBean> {
     	@Override
-    	public AvailableRoom mapRow(ResultSet rs, int rowNum) throws SQLException {
-    		AvailableRoom aRoom = new AvailableRoom();
+    	public AvailableRoomBean mapRow(ResultSet rs, int rowNum) throws SQLException {
+    		AvailableRoomBean aRoom = new AvailableRoomBean();
     		aRoom.setRoomId(rs.getLong("room_id"));
     		aRoom.setMaxGuests(rs.getInt("max_guests"));
     		return aRoom;
@@ -144,10 +146,10 @@ public class RoomService {
         final String METHOD = "findRoom():";
         log.debug(METHOD + query);
         
-        List<AvailableRoom> list = null;
+        List<AvailableRoomBean> list = null;
         Long hotelId = null;
         if (query.getHotelName() != null) {
-        	com.cliffconsulting.travel.entity.Hotel hotel = hotelRepo.findByName(query.getHotelName());
+        	Hotel hotel = hotelRepo.findByName(query.getHotelName());
         	if (hotel != null) {
         		hotelId = hotel.getHotelId();
         	}

@@ -1,4 +1,4 @@
-package com.cliffconsulting.travel.entity;
+package com.cliffconsulting.travel.entity.bean;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -8,10 +8,11 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
-//@Table(name="hotel")
 @Entity
-public class Room implements Serializable { 
+@Table(name="room")
+public class RoomBean implements Serializable { 
 
     private static final long serialVersionUID = 14653464122345L;
 
@@ -33,7 +34,7 @@ public class Room implements Serializable {
     private Date endAvailDate;
 
     
-    public Room() {
+    public RoomBean() {
     }
 
     public Long getRoomId() {
