@@ -12,6 +12,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import com.cliffconsulting.travel.entity.bean.AvailableRoomBean;
+
 @Repository
 public class AvailableRoomRepository {
 
@@ -21,10 +23,10 @@ public class AvailableRoomRepository {
 	@Autowired
 	JdbcTemplate jdbcTemplate;
     
-    class AvailableRoomMapper implements RowMapper<AvailableRoom> {
+    class AvailableRoomMapper implements RowMapper<AvailableRoomBean> {
     	@Override
-    	public AvailableRoom mapRow(ResultSet rs, int rowNum) throws SQLException {
-    		AvailableRoom aRoom = new AvailableRoom();
+    	public AvailableRoomBean mapRow(ResultSet rs, int rowNum) throws SQLException {
+    		AvailableRoomBean aRoom = new AvailableRoomBean();
     		aRoom.setRoomId(rs.getLong("room_id"));
     		aRoom.setMaxGuests(rs.getInt("max_guests"));
     		return aRoom;
@@ -32,11 +34,11 @@ public class AvailableRoomRepository {
     	}
     }
 	
-	public List<AvailableRoom> findByDatesAndHotel(Date startDate, Date endDate, Long hotelId) {
+	public List<AvailableRoomBean> findByDatesAndHotel(Date startDate, Date endDate, Long hotelId) {
 		final String METHOD = "findByDatesAndHotel():";
 		log.debug(METHOD + "begin");
 		
-	    List<AvailableRoom> list = null; 
+	    List<AvailableRoomBean> list = null; 
     
 	    if (hotelId != null) {
 	    	final String SQL = "select r.room_id as roomId, r.max_guests as maxGuests from room r left join (select * from reservation res where end_dt > ? and start_dt < ? ) res on r.room_id = res.room_id where end_dt is null and start_dt is null and hotel_id = ?";

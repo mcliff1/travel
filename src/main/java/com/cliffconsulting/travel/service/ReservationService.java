@@ -10,8 +10,10 @@ import org.springframework.stereotype.Service;
 
 import com.cliffconsulting.travel.entity.ReservationGuestRepository;
 import com.cliffconsulting.travel.entity.ReservationRepository;
+import com.cliffconsulting.travel.entity.bean.ReservationBean;
+import com.cliffconsulting.travel.entity.bean.ReservationGuestBean;
 import com.cliffconsulting.travel.model.Reservation;
-import com.cliffconsulting.travel.model.ReservationGuests;
+import com.cliffconsulting.travel.model.ReservationGuest;
 
 @Service
 public class ReservationService { 
@@ -27,16 +29,16 @@ public class ReservationService {
     }
 
     public Reservation getReservationById(long reservationId) {
-        com.cliffconsulting.travel.entity.Reservation reservationDO = repo.findById(reservationId).orElse(null);
+        ReservationBean reservationDO = repo.findById(reservationId).orElse(null);
         Reservation reservation = new Reservation();
         BeanUtils.copyProperties(reservationDO, reservation);
         reservation.setStartDate(getLocalDate(reservationDO.getStartDate()));
         reservation.setEndDate(getLocalDate(reservationDO.getEndDate()));
-        List<ReservationGuests> guestList = new ArrayList<ReservationGuests>();
-        List<com.cliffconsulting.travel.entity.ReservationGuest> guestsDO = guestRepo.findGuestsByReservationId(reservationId);
+        List<ReservationGuest> guestList = new ArrayList<ReservationGuest>();
+        List<ReservationGuestBean> guestsDO = guestRepo.findGuestsByReservationId(reservationId);
         guestsDO.stream()
         	.forEach(guestDO -> {
-        		ReservationGuests guest = new ReservationGuests();
+        		ReservationGuest guest = new ReservationGuest();
         		BeanUtils.copyProperties(guestDO,  guest);
         		guestList.add(guest);
         	});
@@ -51,7 +53,7 @@ public class ReservationService {
      */
     public Reservation addReservation(Reservation reservation) {
     	
-        com.cliffconsulting.travel.entity.Reservation reservationDO = new com.cliffconsulting.travel.entity.Reservation();
+        ReservationBean reservationDO = new ReservationBean();
         BeanUtils.copyProperties(reservation, reservationDO);
 
         reservationDO.setStartDate(getSQLDate(reservation.getStartDate()));
@@ -61,10 +63,10 @@ public class ReservationService {
         BeanUtils.copyProperties(reservationDO, reservation);
 
         //List<com.cliffconsulting.travel.entity.ReservationGuest> guestsDO = guestRepo.findGuestsByReservationId(reservationId);
-        List<ReservationGuests> guestList = new ArrayList<ReservationGuests>();
+        List<ReservationGuest> guestList = new ArrayList<ReservationGuest>();
         reservation.getGuests().stream()
         	.forEach(guest -> {
-        		com.cliffconsulting.travel.entity.ReservationGuest guestDO = new com.cliffconsulting.travel.entity.ReservationGuest();
+        		ReservationGuestBean guestDO = new ReservationGuestBean();
         		//ReservationGuests guest = new ReservationGuests();
         		BeanUtils.copyProperties(guest,  guestDO);
         		guestDO = guestRepo.save(guestDO);
@@ -78,7 +80,7 @@ public class ReservationService {
 
 
     public void updateReservation(Reservation reservation) {
-        com.cliffconsulting.travel.entity.Reservation reservationDO = new com.cliffconsulting.travel.entity.Reservation();
+        ReservationBean reservationDO = new ReservationBean();
         BeanUtils.copyProperties(reservation, reservationDO);
         reservationDO.setStartDate(getSQLDate(reservation.getStartDate()));
         reservationDO.setEndDate(getSQLDate(reservation.getEndDate()));
@@ -87,7 +89,7 @@ public class ReservationService {
         
         reservation.getGuests().stream()
         	.forEach(guest -> {
-        		com.cliffconsulting.travel.entity.ReservationGuest guestDO = new com.cliffconsulting.travel.entity.ReservationGuest();
+        		ReservationGuestBean guestDO = new ReservationGuestBean();
         		BeanUtils.copyProperties(guest,  guestDO);
         		guestDO = guestRepo.save(guestDO);
         	});

@@ -6,23 +6,17 @@
 package com.cliffconsulting.travel.api;
 
 import com.cliffconsulting.travel.model.Hotel;
-import com.cliffconsulting.travel.model.Room;
+//import com.cliffconsulting.travel.model.Room;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
-import javax.validation.constraints.*;
-import java.util.List;
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-07-15T21:16:59.955Z")
+//import java.util.List;
 
 @Api(value = "hotel", description = "the hotel API")
 public interface HotelApi {
@@ -49,6 +43,7 @@ public interface HotelApi {
     ResponseEntity<Void> deleteHotel(@ApiParam(value = "Hotel id to delete",required=true) @PathVariable("hotelId") Long hotelId,@ApiParam(value = "" ) @RequestHeader(value="api_key", required=false) String apiKey);
 
 
+    /*
     @ApiOperation(value = "returns available rooms", nickname = "getAvailableRooms", notes = "Returns a list of rooms currently available", response = Room.class, responseContainer = "List", tags={ "hotel", })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "successful operation", response = Room.class, responseContainer = "List"),
@@ -58,7 +53,7 @@ public interface HotelApi {
         produces = { "application/json" }, 
         method = RequestMethod.GET)
     ResponseEntity<List<Room>> getAvailableRooms(@ApiParam(value = "ID of hotel to return",required=true) @PathVariable("hotelId") Long hotelId);
-
+*/
 
     @ApiOperation(value = "Find hotel by ID", nickname = "getHotelById", notes = "Returns a single hotel", response = Hotel.class, tags={ "hotel", })
     @ApiResponses(value = { 

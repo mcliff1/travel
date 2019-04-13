@@ -1,10 +1,8 @@
 package com.cliffconsulting.travel.model;
 
 import java.util.Objects;
-import com.cliffconsulting.travel.model.ReservationGuests;
+import com.cliffconsulting.travel.model.ReservationGuest;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +32,7 @@ public class Reservation   {
 
   @JsonProperty("guests")
   @Valid
-  private List<ReservationGuests> guests = new ArrayList<ReservationGuests>();
+  private List<ReservationGuest> guests = new ArrayList<ReservationGuest>();
 
   public Reservation reservationId(Long reservationId) {
     this.reservationId = reservationId;
@@ -121,12 +119,12 @@ public class Reservation   {
     this.endDate = endDate;
   }
 
-  public Reservation guests(List<ReservationGuests> guests) {
+  public Reservation guests(List<ReservationGuest> guests) {
     this.guests = guests;
     return this;
   }
 
-  public Reservation addGuestsItem(ReservationGuests guestsItem) {
+  public Reservation addGuestsItem(ReservationGuest guestsItem) {
     this.guests.add(guestsItem);
     return this;
   }
@@ -140,11 +138,11 @@ public class Reservation   {
 
   @Valid
 
-  public List<ReservationGuests> getGuests() {
+  public List<ReservationGuest> getGuests() {
     return guests;
   }
 
-  public void setGuests(List<ReservationGuests> guests) {
+  public void setGuests(List<ReservationGuest> guests) {
     this.guests = guests;
   }
 
